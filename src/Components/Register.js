@@ -17,7 +17,7 @@ export function Register() {
     const [user, setUser] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
     const navigate = useNavigate()
-    const { signUp } = useAuth();
+    const { signUp, loading } = useAuth();
 
 
     const handleChange = ({ target: { name, value } }) => {
@@ -27,7 +27,7 @@ export function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        signUp(user.email, user.password)
+        await signUp(user.email, user.password)
             .then((userCredential) => {
                 userCredential && navigate('/login')
             }).catch((error) => {
@@ -35,14 +35,16 @@ export function Register() {
             });
     }
 
+    if (loading) return <h1 className="text-3xl font-bold text-center mt-7">Cargando...</h1>
+
     return (
         <div>
-            <Card className="md:container md:w-96 w-50">
+            <Card className="md:container md:w-96 w-50 mt-7">
                 <CardHeader
                     variant="gradient"
                     color="blue"
                     className="md:mb-4 md:grid md:h-28 md:place-items-center
-                    mb-2 grid h-14 place-items-center mt-7
+                    mb-2 grid h-14 place-items-center mt-1
                     "
                 >
                     <Typography className="md:text-3xl font-bold text-xl" color="white">

@@ -17,15 +17,15 @@ export function Login() {
     const [user, setUser] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
     const navigate = useNavigate()
-    const { signIn } = useAuth();
+    const { signIn, loading } = useAuth();
 
     const handleChange = ({ target: { name, value } }) => {
         setUser({ ...user, [name]: value })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        signIn(user.email, user.password)
+        await signIn(user.email, user.password)
             .then((userCredential) => {
                 userCredential && navigate('/')
             }).catch((error) => {
@@ -35,13 +35,15 @@ export function Login() {
 
     }
 
+    if (loading) return <h1 className="text-3xl font-bold text-center mt-7">Cargando...</h1>
+
     return (
         <div>
-            <Card className="md:container md:w-96 w-50">
+            <Card className="md:container md:w-96 w-50 mt-7">
                 <CardHeader
                     variant="gradient"
                     color="white"
-                    className="md:mb-4 md:grid md:h-28 mb-2 grid h-14 place-items-center border-blue-500 border-2 shadow-blue-100 mt-7"
+                    className="md:mb-4 md:grid md:h-28 mb-2 grid h-14 place-items-center border-blue-500 border-2 shadow-blue-100 mt-1"
                 >
                     <Typography className="md:text-3xl font-bold text-xl" color="blue">
                         Ingresar
