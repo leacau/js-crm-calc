@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import { AddUser } from './Components/AddUser';
 import { AuthProvider } from './Context/AuthContext';
 import { Home } from './Components/Home';
+import { ListadoDatos } from './Components/ListadoDatos';
 import { Login } from './Components/Login';
 import { NavBar } from './Components/navBar';
 import { ProtectedRoute } from './Components/ProtectedRoute';
@@ -24,6 +25,7 @@ function App() {
           <AddUser />
         </ProtectedRoute>
         } />
+        <Route path="/datos" element={<ListadoDatos />} />
       </Routes>
     </AuthProvider>
   );

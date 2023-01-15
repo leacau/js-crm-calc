@@ -8,6 +8,7 @@ import {
     Typography,
 } from "@material-tailwind/react";
 
+import { Alert } from "./Alert";
 import { useAuth } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -54,7 +55,7 @@ export function Register() {
                 <CardBody className="flex flex-col gap-4">
                     <Input label="Email" name="email" size="lg" onChange={handleChange} />
                     <Input label="Contraseña" type="password" name="password" size="lg" onChange={handleChange} />
-                    {error && <p className="text-xs text-red-400">{error}</p>}
+                    {error && <Alert message={error} type="error" />}
                 </CardBody>
                 <CardFooter className="pt-0">
                     <Button variant="gradient" fullWidth onClick={handleSubmit}>

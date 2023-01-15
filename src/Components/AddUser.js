@@ -1,5 +1,3 @@
-import './AddUser.css';
-
 import {
     Button,
     Card,
@@ -9,34 +7,69 @@ import {
     Input,
     Typography,
 } from "@material-tailwind/react";
+import { Timestamp, addDoc, collection } from "firebase/firestore";
 
+import Swal from "sweetalert2";
+import { db } from "../firebase";
 import { useAuth } from "../Context/AuthContext";
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 export function AddUser() {
-
-    const [user, setUser] = useState({ email: "", password: "" });
-    const [error, setError] = useState("");
-    const navigate = useNavigate()
-    const { signIn } = useAuth();
+    const { user } = useAuth();
+    const [newUser, setNewUser] = useState({ email: "", apellido: "", nombre: "", dni: "", observaciones: "", owner: user.email, date: Timestamp.fromDate(new Date()) });
+    const [newError, setNewError] = useState("");
+    const [errorType, setErrorType] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleChange = ({ target: { name, value } }) => {
-        setUser({ ...user, [name]: value })
+        setNewUser({ ...newUser, [name]: value })
     }
 
-    const handleSubmit = (e) => {
+    const handleReset = () => {
+        Array.from(document.querySelectorAll("input")).forEach(
+            input => (input.value = "")
+        );
+    };
+
+    const errorSwal = (message, messageType) => {
+        Swal.fire({
+            text: message,
+            icon: messageType,
+            confirmButtonText: 'ok'
+        })
+        setNewError("")
+    }
+
+    const handleAddUser = async (e) => {
         e.preventDefault();
-        signIn(user.email, user.password)
-            .then((userCredential) => {
-                userCredential && navigate('/')
-            }).catch((error) => {
-                console.log(error);
-                setError(error.code)
-            });
-
+        const userCollection = collection(db, "users");
+        if (newUser.email === "" || newUser.apellido === "" || newUser.nombre === "" || newUser.dni === "") {
+            setNewError("Por favor completá todos los campos")
+            setErrorType("error")
+        } else {
+            setLoading(true)
+            await addDoc(userCollection, newUser)
+                .then(() => {
+                    setNewError("Contacto agregado con éxito")
+                    setErrorType("success")
+                    setNewUser({ email: "", apellido: "", nombre: "", dni: "", observaciones: "" })
+                }).catch((error) => {
+                    setNewError(error.code)
+                    setErrorType("error")
+                });
+            handleReset()
+            setLoading(false)
+        }
     }
 
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="animate-spin rounded-full h-20 w-20 border-b-4 border-blue-100">
+                </div>
+            </div>
+        )
+    }
     return (
         <div>
             <Card className="md:container md:w-96 w-50 mt-7">
@@ -50,34 +83,11 @@ export function AddUser() {
                     </Typography>
                 </CardHeader>
                 <CardBody className="flex flex-col gap-4">
-                    <Input label="Email" name="email" size="md" onChange={handleChange} required />
-                    <Input label="Apellido" type="text" name="apellido" size="md" onChange={handleChange} required />
-                    <Input label="Nombre" type="text" name="nombre" size="md" onChange={handleChange} required />
-                    <Input label="DNI" type="text" name="dni" size="md" onChange={handleChange} required />
-                    <label className="block text-sm font-medium text-gray-600 m-0 pt-1">Observaciones</label>
-                    <textarea
-                        name="observaciones"
-                        className="
-                                resize-none
-                                block
-                                w-full
-                                px-3
-                                py-1.5
-                                text-base
-                                font-normal
-                                text-gray-700
-                                bg-white bg-clip-padding
-                                border border-solid border-gray-400
-                                rounded-lg
-                                transition
-                                ease-in-out
-                                m-0
-                                focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                            "
-                        id="observaciones"
-                        rows="4"
-                    /* placeholder="Your message" */
-                    ></textarea>
+                    <Input id="input" label="Email" name="email" size="md" onChange={handleChange} required />
+                    <Input id="input" label="Apellido" name="apellido" size="md" onChange={handleChange} required />
+                    <Input id="input" label="Nombre" name="nombre" size="md" onChange={handleChange} required />
+                    <Input id="input" label="DNI" name="dni" size="md" onChange={handleChange} required />
+                    <Input id="input" label="Observaciones" name="observaciones" onChange={handleChange} />
                 </CardBody>
                 <CardFooter className="pt-0">
                     <Button
@@ -85,11 +95,12 @@ export function AddUser() {
                         color="white"
                         className="border-blue-500 border-2 hover:shadow-blue-200"
                         fullWidth
-                        onClick={handleSubmit}>
+                        onClick={handleAddUser}>
                         <Typography color="blue" className="text-xs">
                             Agregar
                         </Typography>
                     </Button>
+                    {newError && errorSwal(newError, errorType)}
                 </CardFooter>
             </Card>
         </div>
