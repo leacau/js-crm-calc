@@ -7,7 +7,8 @@ import { useAuth } from "../Context/AuthContext";
 
 export function ListadoDatos() {
     const [Datos, setDatos] = useState([]);
-    const [selection, setSelection] = useState({ value: "" });
+    const [selection, setSelection] = useState({ value: "date" });
+    const [order, setOrder] = useState({ value: "1" });
 
 
     const { user } = useAuth();
@@ -16,21 +17,47 @@ export function ListadoDatos() {
         setSelection({ value })
     }
 
+    const handleOrder = ({ target: { value } }) => {
+        setOrder({ value })
+
+    }
+
 
     useEffect(() => {
         const ListDatos = []
         const allDatos = async () => {
+            console.log("allDatos");
             const querySnapshot = await getDocs(query(collection(db, "users"), orderBy("date", "desc")));
             querySnapshot.forEach((doc) => {
                 const completeData = { ...doc.data(), id: doc.id }
                 ListDatos.push(completeData);
                 setDatos(ListDatos);
+
             });
         }
         allDatos();
     }, []);
 
     const datosFiltrados = Datos.filter((dato) => dato.owner === user.email)
+
+    const datosOrdenados = datosFiltrados.sort((a, b) => {
+        if (selection.value === "date") {
+            if ((a[selection.value] > b[selection.value])) {
+                return (order.value * 1);
+            }
+            if ((a[selection.value] < b[selection.value])) {
+                return (order.value * -1);
+            }
+            return 0;
+        }
+        if (a[selection.value] > b[selection.value]) {
+            return order.value * 1;
+        }
+        if (a[selection.value] < b[selection.value]) {
+            return order.value * -1;
+        }
+        return 0;
+    })
 
     return (
         <div className="container flex-column ">
@@ -52,17 +79,36 @@ export function ListadoDatos() {
       ease-in-out
       m-0
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example" onChange={handleSelection}>
-                        <option defaultValue={""}>Odenar</option>
                         <option value="date">Por fecha</option>
                         <option value="nombre">Por nombre</option>
                         <option value="apellido">Por apellido</option>
+                    </select>
+                </div>
+                <div className="mb-3 xl:w-96">
+                    <select className="form-select appearance-none
+      block
+      w-full
+      pl-3 pr-10
+      py-1.5
+      text-base
+      font-normal
+      text-gray-700
+      bg-white bg-clip-padding bg-no-repeat
+      border border-solid border-gray-300
+      rounded
+      transition
+      ease-in-out
+      m-0
+      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example" onChange={handleOrder}>
+                        <option value="1">Ascendente</option>
+                        <option value="-1">Descendente</option>
                     </select>
                 </div>
             </div >
             <div>
                 {(datosFiltrados.length === 0) && <h2 className="h3 text-center mb-5">No hay contactos cargados</h2>}
 
-                {datosFiltrados.map((dato) => {
+                {datosOrdenados.map((dato) => {
                     const d = dato.date;
                     const date = d.toDate().toLocaleDateString("es-AR", { year: "numeric", month: "numeric", day: "numeric" })
 

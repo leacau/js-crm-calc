@@ -7,12 +7,12 @@ import {
     Input,
     Typography,
 } from "@material-tailwind/react";
-import { Timestamp, addDoc, collection } from "firebase/firestore";
+import { Timestamp, addDoc, collection, getDocs, query } from "firebase/firestore";
+import { useEffect, useState } from 'react';
 
 import Swal from "sweetalert2";
 import { db } from "../firebase";
 import { useAuth } from "../Context/AuthContext";
-import { useState } from 'react';
 
 export function AddUser() {
     const { user } = useAuth();
@@ -20,6 +20,7 @@ export function AddUser() {
     const [newError, setNewError] = useState("");
     const [errorType, setErrorType] = useState("");
     const [loading, setLoading] = useState(false);
+    const [datos, setDatos] = useState([]);
 
     const handleChange = ({ target: { name, value } }) => {
         setNewUser({ ...newUser, [name]: value })
@@ -40,26 +41,47 @@ export function AddUser() {
         setNewError("")
     }
 
+    useEffect(() => {
+        const ListDatos = []
+        const allDatos = async () => {
+            const querySnapshot = await getDocs(query(collection(db, "users")));
+            querySnapshot.forEach((doc) => {
+                const completeData = { ...doc.data(), id: doc.id }
+                ListDatos.push(completeData);
+                setDatos(ListDatos);
+            });
+        }
+        allDatos();
+    }, []);
+
+    const datosFiltrados = datos.filter((dato) => (dato.dni === newUser.dni || dato.email === newUser.email))
+
     const handleAddUser = async (e) => {
         e.preventDefault();
-        const userCollection = collection(db, "users");
-        if (newUser.email === "" || newUser.apellido === "" || newUser.nombre === "" || newUser.dni === "") {
-            setNewError("Por favor completá todos los campos")
+        if (datosFiltrados.length > 0) {
+            setNewError("El contacto ya existe, le pertenece a " + datosFiltrados[0].owner)
             setErrorType("error")
         } else {
-            setLoading(true)
-            await addDoc(userCollection, newUser)
-                .then(() => {
-                    setNewError("Contacto agregado con éxito")
-                    setErrorType("success")
-                    setNewUser({ email: "", apellido: "", nombre: "", dni: "", observaciones: "" })
-                }).catch((error) => {
-                    setNewError(error.code)
-                    setErrorType("error")
-                });
-            handleReset()
-            setLoading(false)
+            const userCollection = collection(db, "users");
+            if (newUser.email === "" || newUser.apellido === "" || newUser.nombre === "" || newUser.dni === "") {
+                setNewError("Por favor completá todos los campos")
+                setErrorType("error")
+            } else {
+                setLoading(true)
+                await addDoc(userCollection, newUser)
+                    .then(() => {
+                        setNewError("Contacto agregado con éxito")
+                        setErrorType("success")
+                        setNewUser({ email: "", apellido: "", nombre: "", dni: "", observaciones: "" })
+                    }).catch((error) => {
+                        setNewError(error.code)
+                        setErrorType("error")
+                    });
+                handleReset()
+                setLoading(false)
+            }
         }
+
     }
 
     if (loading) {
