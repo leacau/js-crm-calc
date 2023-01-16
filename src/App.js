@@ -25,7 +25,9 @@ function App() {
           <AddUser />
         </ProtectedRoute>
         } />
-        <Route path="/datos" element={<ListadoDatos />} />
+        <Route path="/datos" element={<ProtectedRoute>
+          <ListadoDatos />
+        </ProtectedRoute>} />
       </Routes>
     </AuthProvider>
   );
