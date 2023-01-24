@@ -18,7 +18,7 @@ export function Register() {
     const [user, setUser] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
     const navigate = useNavigate()
-    const { signUp, loading } = useAuth();
+    const { signUp } = useAuth();
 
 
     const handleChange = ({ target: { name, value } }) => {
