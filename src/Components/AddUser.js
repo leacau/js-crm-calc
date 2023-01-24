@@ -93,7 +93,7 @@ export function AddUser() {
         )
     }
     return (
-        <div>
+        <div className="flex justify-center items-center">
             <Card className="md:container md:w-96 w-50 mt-7">
                 <CardHeader
                     variant="gradient"

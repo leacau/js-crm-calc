@@ -28,18 +28,25 @@ export function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await signUp(user.email, user.password)
-            .then((userCredential) => {
-                userCredential && navigate('/login')
-            }).catch((error) => {
-                setError(error.code)
-            });
+        if (user.password !== user.CheckPassword) {
+            return setError("Las contraseñas no coinciden")
+        } else if (user.email !== user.CheckEmail) {
+            return setError("Los emails no coinciden")
+        } else {
+            await signUp(user.email, user.password)
+                .then((userCredential) => {
+                    userCredential && navigate('/login')
+                }).catch((error) => {
+                    setError(error.code)
+                });
+        }
     }
 
     if (loading) return <h1 className="text-3xl font-bold text-center mt-7">Cargando...</h1>
 
+
     return (
-        <div>
+        <div className="flex justify-center items-center">
             <Card className="md:container md:w-96 w-50 mt-7">
                 <CardHeader
                     variant="gradient"
@@ -54,7 +61,9 @@ export function Register() {
                 </CardHeader>
                 <CardBody className="flex flex-col gap-4">
                     <Input label="Email" name="email" size="lg" onChange={handleChange} />
+                    <Input label="Confirmar Email" name="CheckEmail" size="lg" />
                     <Input label="Contraseña" type="password" name="password" size="lg" onChange={handleChange} />
+                    <Input label="Confirmar contraseña" type="password" name="CheckPassword" size="lg" />
                     {error && <Alert message={error} type="error" />}
                 </CardBody>
                 <CardFooter className="pt-0">

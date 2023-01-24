@@ -16,23 +16,34 @@ export function NavBar() {
     const navigate = useNavigate();
 
     const handlerLogOut = async () => {
-        await logOut();
+        if (window.innerWidth < 959) {
+            setOpenNav(!openNav)
+        }; await logOut();
     };
 
     const goToLogin = () => {
+        if (window.innerWidth < 959) {
+            setOpenNav(!openNav)
+        };
         navigate('/login');
     }
 
     const goToRegister = () => {
-        navigate('/register');
+        if (window.innerWidth < 959) {
+            setOpenNav(!openNav)
+        }; navigate('/register');
     }
 
     const goToList = () => {
-        navigate('/datos');
+        if (window.innerWidth < 959) {
+            setOpenNav(!openNav)
+        }; navigate('/datos');
     }
 
     const goToAddUser = () => {
-        navigate('/addUser');
+        if (window.innerWidth < 959) {
+            setOpenNav(!openNav)
+        }; navigate('/addUser');
     }
 
     useEffect(() => {

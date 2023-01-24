@@ -49,6 +49,7 @@ export function Login() {
     }
 
     const handleResetPassword = async () => {
+        setError("");
         if (!user.email) return setError("Por favor ingresá tu email"); setType("error")
         try {
             setNowLoading(true)
@@ -59,7 +60,6 @@ export function Login() {
             setError(error.code)
             setType("error")
         }
-        setError("")
         setNowLoading(false)
     }
 
@@ -74,7 +74,7 @@ export function Login() {
     }
 
     return (
-        <div>
+        <div className="flex justify-center items-center">
             <Card className="md:container md:w-96 w-50 mt-7">
                 <CardHeader
                     variant="gradient"
@@ -88,7 +88,7 @@ export function Login() {
                 <CardBody className="flex flex-col gap-4">
                     <Input label="Email" name="email" size="lg" onChange={handleChange} />
                     <Input label="Contraseña" name="password" size="lg" type="password" onChange={handleChange} />
-                    <Typography className="text-xs text-center mb-2"><p onClick={handleResetPassword} target="_blank" className="text-blue-600 underline cursor-pointer">¿Olvidaste tu contraseña?</p></Typography>
+                    <Typography className="text-xs text-center mb-2"><a onClick={handleResetPassword} target="_blank" className="text-blue-600 underline cursor-pointer">¿Olvidaste tu contraseña?</a></Typography>
                     {error && errorSwal(error, type)}
                 </CardBody>
                 <CardFooter className="pt-0">
