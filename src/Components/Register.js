@@ -42,9 +42,6 @@ export function Register() {
         }
     }
 
-    if (loading) return <h1 className="text-3xl font-bold text-center mt-7">Cargando...</h1>
-
-
     return (
         <div className="flex justify-center items-center">
             <Card className="md:container md:w-96 w-50 mt-7">
