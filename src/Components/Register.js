@@ -8,30 +8,38 @@ import {
     Typography,
 } from "@material-tailwind/react";
 
-import { Alert } from "./Alert";
+import Swal from "sweetalert2";
 import { useAuth } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 export function Register() {
 
-    const [user, setUser] = useState({ email: "", password: "" });
+    const [user, setUser] = useState({ email: "", password: "", CheckEmail: "", CheckPassword: "" });
     const [error, setError] = useState("");
     const navigate = useNavigate()
     const { signUp } = useAuth();
+
+    const errorSwal = (message, messageType) => {
+        Swal.fire({
+            text: message,
+            icon: messageType,
+            confirmButtonText: 'ok'
+        })
+        setError("")
+    }
 
 
     const handleChange = ({ target: { name, value } }) => {
         setUser({ ...user, [name]: value })
     }
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (user.password !== user.CheckPassword) {
-            return setError("Las contraseñas no coinciden")
+            setError("Las contraseñas no coinciden")
         } else if (user.email !== user.CheckEmail) {
-            return setError("Los emails no coinciden")
+            setError("Los emails no coinciden")
         } else {
             await signUp(user.email, user.password)
                 .then((userCredential) => {
@@ -58,10 +66,10 @@ export function Register() {
                 </CardHeader>
                 <CardBody className="flex flex-col gap-4">
                     <Input label="Email" name="email" size="lg" onChange={handleChange} />
-                    <Input label="Confirmar Email" name="CheckEmail" size="lg" />
+                    <Input label="Confirmar Email" name="CheckEmail" size="lg" onChange={handleChange} />
                     <Input label="Contraseña" type="password" name="password" size="lg" onChange={handleChange} />
-                    <Input label="Confirmar contraseña" type="password" name="CheckPassword" size="lg" />
-                    {error && <Alert message={error} type="error" />}
+                    <Input label="Confirmar contraseña" type="password" name="CheckPassword" size="lg" onChange={handleChange} />
+                    {error && errorSwal(error, "error")}
                 </CardBody>
                 <CardFooter className="pt-0">
                     <Button variant="gradient" fullWidth onClick={handleSubmit}>
