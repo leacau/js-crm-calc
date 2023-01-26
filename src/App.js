@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { AddUser } from './Components/AddUser';
 import { AuthProvider } from './Context/AuthContext';
+import { Calc } from './Components/Calc';
 import { Home } from './Components/Home';
 import { ListadoDatos } from './Components/ListadoDatos';
 import { Login } from './Components/Login';
@@ -28,6 +29,7 @@ function App() {
         <Route path="/datos" element={<ProtectedRoute>
           <ListadoDatos />
         </ProtectedRoute>} />
+        <Route path="/calc" element={<Calc />} />
       </Routes>
     </AuthProvider>
   );
