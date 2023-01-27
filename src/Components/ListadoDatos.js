@@ -27,13 +27,11 @@ export function ListadoDatos() {
     useEffect(() => {
         const ListDatos = []
         const allDatos = async () => {
-            console.log("allDatos");
             const querySnapshot = await getDocs(query(collection(db, "users"), orderBy("date", "desc")));
             querySnapshot.forEach((doc) => {
                 const completeData = { ...doc.data(), id: doc.id }
                 ListDatos.push(completeData);
                 setDatos(ListDatos);
-
             });
         }
         allDatos();

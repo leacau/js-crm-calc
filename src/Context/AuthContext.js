@@ -14,7 +14,6 @@ export const useAuth = () => {
 }
 
 export function AuthProvider({ children }) {
-
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -32,8 +31,6 @@ export function AuthProvider({ children }) {
             setLoading(false);
         })
     }, [])
-
-
 
     return (
         <authContext.Provider value={{ signUp, signIn, user, logOut, loading, resetPassword }}>
