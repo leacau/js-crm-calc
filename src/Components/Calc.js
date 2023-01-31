@@ -85,7 +85,7 @@ export function Calc() {
             }
         };
         cantPersonas();
-    }, [user.family])
+    }, [user.family]);
 
     console.log(user.quantity, user.childrens);
 

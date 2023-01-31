@@ -15,8 +15,8 @@ export function Calculate(plan, people, salary, ageT, ageC, neto, servMutual) {
     }
     let ServicioMutualPartic = extras.CuotaSoc + extras.Sepelio + extras.ServMutual
 
-    function difTope(aporte, requerido) {
-        const sueldoRem = parseFloat(aporte * 100) / 3
+    function difTope(requerido) {
+        const sueldoRem = parseFloat(salary * 100) / 3
         if (parseFloat(sueldoRem) < parseFloat(requeridos.maxAport)) {
             const aporteRec = parseFloat(sueldoRem * 0.0765)
             return parseFloat(requerido - aporteRec).toFixed(2)
@@ -43,6 +43,9 @@ export function Calculate(plan, people, salary, ageT, ageC, neto, servMutual) {
         }
         allDatos();
     }, []);
+    console.log(requeridos);
+    console.log(netos);
+    console.log(extras);
 
     if (people === 1) {
         if (ageT < 31) {
@@ -54,6 +57,7 @@ export function Calculate(plan, people, salary, ageT, ageC, neto, servMutual) {
                 return cost;
             }
         } else {
+
         }
     }
 }
