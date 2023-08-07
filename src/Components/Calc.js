@@ -15,17 +15,21 @@ import { useState } from 'react';
 export function Calc() {
 	const [user, SetUser] = useState({
 		plan: '',
+		sexT:'',
+		ageT:'',
+		sexC:'',
+		ageC:'',
 		family: '',
 		quantity: 1,
 		childrens: 0,
-		ageT: '',
-		ageC: '',
 		salary: 0,
 		regimen: '',
 		categoria: '',
 	});
 	const [input, SetInput] = useState('');
 	const [servMutual, SetServMutual] = useState('');
+	const [fondoJubTit, SetFondoJubTit] = useState('');
+	const [fondoJubCony, SetFondoJubCony] = useState('');
 	const [difDeTope, SetDifDeTope] = useState('');
 	const [aporteRecibMonot, SetAporteRecibMonot] = useState('');
 	const [netoAutonomo, SetNetoAutonomo] = useState('');
@@ -51,54 +55,6 @@ export function Calc() {
 	]; //Aportes requeridos para ingresos grupales
 
 	useEffect(() => {
-		switch (user.categoria) {
-			case 'A':
-				SetAporteRecibMonot(parseFloat(2755.58));
-				break;
-			case 'B':
-				SetAporteRecibMonot(parseFloat(2755.58));
-				break;
-			case 'C':
-				SetAporteRecibMonot(parseFloat(2755.58));
-				break;
-			case 'D':
-				SetAporteRecibMonot(parseFloat(3274.43));
-				break;
-			case 'E':
-				SetAporteRecibMonot(parseFloat(4006.82));
-				break;
-			case 'F':
-				SetAporteRecibMonot(parseFloat(4630.52));
-				break;
-			case 'G':
-				SetAporteRecibMonot(parseFloat(4961.27));
-				break;
-			case 'H':
-				SetAporteRecibMonot(parseFloat(5953.52));
-				break;
-			case 'I':
-				SetAporteRecibMonot(parseFloat(7371.03));
-				break;
-			case 'J':
-				SetAporteRecibMonot(parseFloat(8249.88));
-				break;
-			case 'K':
-				SetAporteRecibMonot(parseFloat(9454.76));
-				break;
-			case '':
-				break;
-			default:
-				Swal.fire({
-					text: 'Categoria inexistente, consultá en administración',
-					icon: 'info',
-					confirmButtonText: 'ok',
-				});
-				SetAporteRecibMonot(0);
-				SetFinalMonotributo(0);
-				SetNetoAutonomo(0);
-				SetNetoMonotributo(0);
-				SetServMutual(0);
-		} //Devuelve el aporte recibido por persona, de acuerdo a la categoria del monotributo
 		if (user.regimen !== 'Asalariado') {
 			switch (parseInt(user.quantity)) {
 				case 1:
@@ -176,6 +132,92 @@ export function Calc() {
 					SetNetoMonotributo(0);
 					SetServMutual(0);
 			} //Devuelve el valor NETO del plan autonomo o monotributo de acuerdo a la cantidad de personas
+			switch (user.categoria) {
+				case 'A':
+					SetAporteRecibMonot(parseFloat(2755.58).toFixed(2));
+					break;
+				case 'B':
+					SetAporteRecibMonot(parseFloat(2755.58).toFixed(2));
+					break;
+				case 'C':
+					SetAporteRecibMonot(parseFloat(2755.58).toFixed(2));
+					break;
+				case 'D':
+					SetAporteRecibMonot(parseFloat(3274.43).toFixed(2));
+					break;
+				case 'E':
+					SetAporteRecibMonot(parseFloat(4006.82).toFixed(2));
+					break;
+				case 'F':
+					SetAporteRecibMonot(parseFloat(4630.52).toFixed(2));
+					break;
+				case 'G':
+					SetAporteRecibMonot(parseFloat(4961.27).toFixed(2));
+					break;
+				case 'H':
+					SetAporteRecibMonot(parseFloat(5953.52).toFixed(2));
+					break;
+				case 'I':
+					SetAporteRecibMonot(parseFloat(7371.03).toFixed(2));
+					break;
+				case 'J':
+					SetAporteRecibMonot(parseFloat(8249.88).toFixed(2));
+					break;
+				case 'K':
+					SetAporteRecibMonot(parseFloat(9454.76).toFixed(2));
+					break;
+				case '':
+					break;
+				default:
+					Swal.fire({
+						text: 'Categoria inexistente, consultá en administración',
+						icon: 'info',
+						confirmButtonText: 'ok',
+					});
+					SetAporteRecibMonot(0);
+					SetFinalMonotributo(0);
+					SetNetoAutonomo(0);
+					SetNetoMonotributo(0);
+					SetServMutual(0);
+			} //Devuelve el aporte recibido por persona, de acuerdo a la categoria del monotributo
+		}
+
+		if (user.ageT > 44 || user.ageC > 44){
+			if (user.sexC === 'M') {
+				if (user.ageC >= 50 && user.ageC <= 54) {
+					SetFondoJubCony(parseInt(1114))
+				}else if (user.ageC >= 55 && user.ageC <= 59) {
+					SetFondoJubCony(parseInt(2226))
+				} else if (user.ageC >= 60) {
+					SetFondoJubCony(parseInt(3340))
+				}
+			} else {
+				if (user.ageC >= 45 && user.ageC <= 49) {
+					SetFondoJubCony(parseInt(1114))
+				}else if (user.ageC >= 50 && user.ageC <= 54) {
+					SetFondoJubCony(parseInt(2226))
+				} else if (user.ageC >= 55) {
+					SetFondoJubCony(parseInt(3340))
+				}
+			}
+			
+			if (user.sexT === 'M') {
+				if (user.ageT >= 50 && user.ageT <= 54) {
+					SetFondoJubTit(parseInt(1114))
+				}else if (user.ageT >= 55 && user.ageT <= 59) {
+					SetFondoJubTit(parseInt(2226))
+				} else if (user.ageT >= 60) {
+					SetFondoJubTit(parseInt(3340))
+				}
+			} else {
+				if (user.ageT >= 45 && user.ageT <= 49) {
+					SetFondoJubTit(parseInt(1114))
+				}else if (user.ageT >= 50 && user.ageT <= 54) {
+					SetFondoJubTit(parseInt(2226))
+				} else if (user.ageT >= 55) {
+					SetFondoJubTit(parseInt(3340))
+				}
+			}
 		}
 
 		const cantPersonas = () => {
@@ -200,6 +242,41 @@ export function Calc() {
 								onChange={handleChange}
 							/>
 						</div>
+						<div className='m-1'>
+							<Input
+								label='Edad de conyuge'
+								name='ageC'
+								size='lg'
+								defaultValue={''}
+								onChange={handleChange}
+							/>
+							<select
+							className='form-select appearance-none
+                        block
+                        w-full
+                        px-3
+                        py-1.5
+                        text-base
+                        font-normal
+                        text-gray-700
+                        bg-white bg-clip-padding bg-no-repeat
+                        border border-solid border-gray-300
+                        rounded
+                        transition
+                        ease-in-out
+                        m-0
+                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+							label='Sexo de conyuge'
+							name='sexC'
+							size='lg'
+							onChange={handleChange}
+						>
+							<option value=''>Sexo de conyuge</option>
+							<option value='M'>M</option>
+							<option value='F'>F</option>
+
+						</select>
+						</div>
 					</div>
 				);
 			} else {
@@ -208,54 +285,7 @@ export function Calc() {
 			}
 		};
 		cantPersonas();
-	}, [user.family, user.categoria, user.quantity]);
-
-	/* const categMonot = [
-		{
-			categoria: 'A',
-			Value: 2755.58,
-		},
-		{
-			categoria: 'B',
-			Value: 2755.58,
-		},
-		{
-			categoria: 'C',
-			Value: 2755.58,
-		},
-		{
-			categoria: 'D',
-			Value: 3274.43,
-		},
-		{
-			categoria: 'E',
-			Value: 4006.82,
-		},
-		{
-			categoria: 'F',
-			Value: 4630.52,
-		},
-		{
-			categoria: 'G',
-			Value: 4961.27,
-		},
-		{
-			categoria: 'H',
-			Value: 5953.52,
-		},
-		{
-			categoria: 'I',
-			Value: 7371.03,
-		},
-		{
-			categoria: 'J',
-			Value: 8249.88,
-		},
-		{
-			categoria: 'K',
-			Value: 9454.76,
-		},
-	]; */ //Aporte frecibido por la OS de acuerdo a la categoría del monotributo
+	}, [user.family, user.categoria, user.quantity, user.ageC, user.ageT, user.sexT, user.sexC]);
 
 	const requeridosIndiv = [
 		{
@@ -274,7 +304,9 @@ export function Calc() {
 
 	const servicio = () => {
 		const subTotalExtra = servMutTit + (user.quantity - 1) * servMutPart;
-		const totalExtra = subTotalExtra - user.childrens * sepelio;
+		console.log('Fondo Conyuge:',fondoJubCony, 'Edad Conyuge:', user.ageC, 'Sexo Conyuge:', user.sexC);
+		console.log('Fondo Titular:',fondoJubTit, 'Edad Titular:', user.ageT, 'Sexo Titular:', user.sexT);
+		const totalExtra = subTotalExtra - user.childrens * sepelio + fondoJubCony + fondoJubTit;
 		SetServMutual(parseFloat(totalExtra).toFixed(2)); //Asigna extra mensual de acuerdo a cantidad de personas (restando el sepelio de los menores)
 
 		if (user.regimen === 'Autonomo') {
@@ -441,6 +473,43 @@ export function Calc() {
 						<option value={false}>Individual</option>
 						<option value={true}>Grupo Familiar</option>
 					</select>
+						<div className='m-1'>
+							<Input
+								label='Edad de titular'
+								name='ageT'
+								size='lg'
+								defaultValue={''}
+								onChange={handleChange}
+							/>
+					<select
+							className='form-select appearance-none
+                        block
+                        w-full
+                        px-3
+                        py-1.5
+                        text-base
+                        font-normal
+                        text-gray-700
+                        bg-white bg-clip-padding bg-no-repeat
+                        border border-solid border-gray-300
+                        rounded
+                        transition
+                        ease-in-out
+                        m-0
+                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+							label='Sexo de titular'
+							name='sexT'
+							size='lg'
+							onChange={handleChange}
+							defaultValue={''}
+						>
+							<option value=''>Sexo de titular</option>
+							<option value='M'>M</option>
+							<option value='F'>F</option>
+
+						</select>
+						</div>
+
 					{input}
 					{user.regimen === 'Asalariado' && (
 						<div className='m-1'>
@@ -509,7 +578,7 @@ export function Calc() {
 				</Typography>
 				{user.regimen === 'Asalariado' && (
 					<Typography className='md:text-1xl font-bold text-xl' color='green'>
-						Diferencia de Tope: $ {difDeTope}
+						Diferencia de Tope: $ {(difDeTope<0) ? 0 : difDeTope}
 					</Typography>
 				)}
 				{user.regimen === 'Monotributo' && (
