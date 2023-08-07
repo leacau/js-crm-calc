@@ -59,63 +59,136 @@ export function Calc() {
 			switch (parseInt(user.quantity)) {
 				case 1:
 					if (user.regimen === 'Autonomo') {
-						SetNetoAutonomo(23226.22);
+						if(user.plan === "PMI 2886 Soltero") {
+							if(user.ageT >= 27 && user.ageT <= 30){
+								SetNetoAutonomo(14703.05)
+							} else if (user.ageT <= 26){
+								SetNetoAutonomo(13460.61)
+							} else{
+								Swal.fire({
+									text: 'Si es mayor de 30 años, el plan seleccionado deber no puede ser soltero',
+									icon: 'info',
+									confirmButtonText: 'ok',
+								});
+							}
+						} else if (user.plan === "PMI 2886"){
+							SetNetoAutonomo(23226.22);
+						} else if (user.plan === "PMI 2886/2000"){
+							SetNetoAutonomo(36385.07);
+						}
+						
 					} else if (user.regimen === 'Monotributo') {
-						SetNetoMonotributo(20995.35);
+						if(user.plan === "PMI Monotributo Soltero") {
+							if(user.ageT >= 27 && user.ageT <= 30){
+								SetNetoMonotributo(13309.57)
+							} else if (user.ageT <= 26){
+								SetNetoMonotributo(12191.70)
+							} else {
+								Swal.fire({
+									text: 'Si es mayor de 30 años, el plan seleccionado deber no puede ser soltero',
+									icon: 'info',
+									confirmButtonText: 'ok',
+								});
+							}
+						} else {
+							SetNetoMonotributo(20995.35);
+						}
 					}
 					break;
 				case 2:
 					if (user.regimen === 'Autonomo') {
-						SetNetoAutonomo(46452.43);
+						if(user.plan === "PMI 2886"){
+							SetNetoAutonomo(46452.43);	
+						} else {
+							SetNetoAutonomo (72770.14);
+						}
+						
 					} else if (user.regimen === 'Monotributo') {
 						SetNetoMonotributo(41990.69);
 					}
 					break;
 				case 3:
 					if (user.regimen === 'Autonomo') {
-						SetNetoAutonomo(58065.53);
+						if(user.plan === "PMI 2886"){
+							SetNetoAutonomo(58065.53);	
+						} else {
+							SetNetoAutonomo (90962.67);
+						}
 					} else if (user.regimen === 'Monotributo') {
 						SetNetoMonotributo(52488.37);
 					}
 					break;
 				case 4:
 					if (user.regimen === 'Autonomo') {
-						SetNetoAutonomo(69678.65);
+						if(user.plan === "PMI 2886"){
+							SetNetoAutonomo(69678.65);	
+						} else {
+							SetNetoAutonomo (109155.21);
+						}
 					} else if (user.regimen === 'Monotributo') {
 						SetNetoMonotributo(62986.05);
 					}
 					break;
 				case 5:
 					if (user.regimen === 'Autonomo') {
-						SetNetoAutonomo(81291.75);
+						if(user.plan === "PMI 2886"){
+							SetNetoAutonomo(81291.75);	
+						} else {
+							SetNetoAutonomo (127347.74);
+						}
 					} else if (user.regimen === 'Monotributo') {
 						SetNetoMonotributo(73483.71);
 					}
 					break;
 				case 6:
 					if (user.regimen === 'Autonomo') {
-						SetNetoAutonomo(92904.87);
+						if(user.plan === "PMI 2886"){
+							SetNetoAutonomo(92904.87);	
+						} else {
+							SetNetoAutonomo (145540.28);
+						}
 					} else if (user.regimen === 'Monotributo') {
 						SetNetoMonotributo(83981.39);
 					}
 					break;
 				case 7:
 					if (user.regimen === 'Autonomo') {
-						SetNetoAutonomo(104517.97);
+						if(user.plan === "PMI 2886"){
+							SetNetoAutonomo(104517.97);	
+						} else {
+							SetNetoAutonomo (163732.80);
+						}
 					} else if (user.regimen === 'Monotributo') {
 						SetNetoMonotributo(94479.06);
 					}
 					break;
 				case 8:
 					if (user.regimen === 'Autonomo') {
-						SetNetoAutonomo(116131.08);
+						if(user.plan === "PMI 2886"){
+							SetNetoAutonomo(116131.08);	
+						} else {
+							SetNetoAutonomo (181925.35);
+						}
 					} else if (user.regimen === 'Monotributo') {
-						SetNetoMonotributo(104976.74);
+						if(user.plan === "PMI 2886"){
+							SetNetoAutonomo(116131.08);	
+						} else {
+							;
+						}
 					}
 					break;
 				case 9:
 					if (user.regimen === 'Autonomo') {
-						SetNetoAutonomo(127748.37);
+						if(user.plan === "PMI 2886"){
+							SetNetoAutonomo(127748.37);
+						}else {
+							Swal.fire({
+								text: 'El valor del plan PMI 2886/2000 no esta definido para 9 personas.',
+								icon: 'info',
+								confirmButtonText: 'ok',
+							});
+						}
+
 					} else if (user.regimen === 'Monotributo') {
 						SetNetoMonotributo(115474.4);
 					}
@@ -304,10 +377,24 @@ export function Calc() {
 
 	const servicio = () => {
 		const subTotalExtra = servMutTit + (user.quantity - 1) * servMutPart;
-		console.log('Fondo Conyuge:',fondoJubCony, 'Edad Conyuge:', user.ageC, 'Sexo Conyuge:', user.sexC);
-		console.log('Fondo Titular:',fondoJubTit, 'Edad Titular:', user.ageT, 'Sexo Titular:', user.sexT);
 		const totalExtra = subTotalExtra - user.childrens * sepelio + fondoJubCony + fondoJubTit;
-		SetServMutual(parseFloat(totalExtra).toFixed(2)); //Asigna extra mensual de acuerdo a cantidad de personas (restando el sepelio de los menores)
+		
+		if(user.regimen !== "Asalariado") {
+			if (user.regimen === "Autonomo" && user.plan === "PMI 2886 SOltero") {
+				SetServMutual(parseFloat(totalExtra).toFixed(2) - parseInt(203)); //Asigna extra mensual de acuerdo a cantidad de personas (restando el sepelio de los menores)
+			} else {
+				SetServMutual(parseFloat(totalExtra).toFixed(2)); //Asigna extra mensual de acuerdo a cantidad de personas (restando el sepelio de los menores)		
+			}
+		
+		}else {
+			if (user.quantity === 1 && user.ageT < 31) {
+				SetServMutual(0)				
+			} else if (user.quantity === 2 && (user.ageT < 31 && user.ageC < 31)){
+				SetServMutual(0)
+			} else {
+				SetServMutual(parseFloat(totalExtra).toFixed(2)); //Asigna extra mensual de acuerdo a cantidad de personas (restando el sepelio de los menores)
+			}
+		}
 
 		if (user.regimen === 'Autonomo') {
 			SetFinalMonotributo(0);
@@ -430,7 +517,7 @@ export function Calc() {
 						{user.regimen === 'Asalariado' && (
 							<option value='PMI3000'>PMI 3000</option>
 						)}
-						{user.regimen === 'Autonomo' && (
+						{(user.regimen === 'Autonomo' && user.ageT <= 30 && user.quantity === 1) && (
 							<option value='PMI 2886 Soltero'>PMI 2886 Soltero</option>
 						)}
 						{user.regimen === 'Autonomo' && (
@@ -439,7 +526,7 @@ export function Calc() {
 						{user.regimen === 'Autonomo' && (
 							<option value='PMI 2886/2000'>PMI 2886/2000</option>
 						)}
-						{user.regimen === 'Monotributo' && (
+						{(user.regimen === 'Monotributo' && user.ageT <= 30 && user.quantity === 1) && (
 							<option value='PMI Monotributo Soltero'>
 								PMI Monotributo Soltero
 							</option>
