@@ -99,82 +99,84 @@ export function Calc() {
 				SetNetoMonotributo(0);
 				SetServMutual(0);
 		} //Devuelve el aporte recibido por persona, de acuerdo a la categoria del monotributo
-		switch (parseInt(user.quantity)) {
-			case 1:
-				if (user.regimen === 'Autonomo') {
-					SetNetoAutonomo(23226.22);
-				} else if (user.regimen === 'Monotributo') {
-					SetNetoMonotributo(20995.35);
-				}
-				break;
-			case 2:
-				if (user.regimen === 'Autonomo') {
-					SetNetoAutonomo(46452.43);
-				} else if (user.regimen === 'Monotributo') {
-					SetNetoMonotributo(41990.69);
-				}
-				break;
-			case 3:
-				if (user.regimen === 'Autonomo') {
-					SetNetoAutonomo(58065.53);
-				} else if (user.regimen === 'Monotributo') {
-					SetNetoMonotributo(52488.37);
-				}
-				break;
-			case 4:
-				if (user.regimen === 'Autonomo') {
-					SetNetoAutonomo(69678.65);
-				} else if (user.regimen === 'Monotributo') {
-					SetNetoMonotributo(62986.05);
-				}
-				break;
-			case 5:
-				if (user.regimen === 'Autonomo') {
-					SetNetoAutonomo(81291.75);
-				} else if (user.regimen === 'Monotributo') {
-					SetNetoMonotributo(73483.71);
-				}
-				break;
-			case 6:
-				if (user.regimen === 'Autonomo') {
-					SetNetoAutonomo(92904.87);
-				} else if (user.regimen === 'Monotributo') {
-					SetNetoMonotributo(83981.39);
-				}
-				break;
-			case 7:
-				if (user.regimen === 'Autonomo') {
-					SetNetoAutonomo(104517.97);
-				} else if (user.regimen === 'Monotributo') {
-					SetNetoMonotributo(94479.06);
-				}
-				break;
-			case 8:
-				if (user.regimen === 'Autonomo') {
-					SetNetoAutonomo(116131.08);
-				} else if (user.regimen === 'Monotributo') {
-					SetNetoMonotributo(104976.74);
-				}
-				break;
-			case 9:
-				if (user.regimen === 'Autonomo') {
-					SetNetoAutonomo(127748.37);
-				} else if (user.regimen === 'Monotributo') {
-					SetNetoMonotributo(115474.4);
-				}
-				break;
-			default:
-				Swal.fire({
-					text: 'Criterio fuera de evaluación, consultá en administración',
-					icon: 'info',
-					confirmButtonText: 'ok',
-				});
-				SetAporteRecibMonot(0);
-				SetFinalMonotributo(0);
-				SetNetoAutonomo(0);
-				SetNetoMonotributo(0);
-				SetServMutual(0);
-		} //Devuelve el valor NETO del plan autonomo o monotributo de acuerdo a la cantidad de personas
+		if (user.regimen !== 'Asalariado') {
+			switch (parseInt(user.quantity)) {
+				case 1:
+					if (user.regimen === 'Autonomo') {
+						SetNetoAutonomo(23226.22);
+					} else if (user.regimen === 'Monotributo') {
+						SetNetoMonotributo(20995.35);
+					}
+					break;
+				case 2:
+					if (user.regimen === 'Autonomo') {
+						SetNetoAutonomo(46452.43);
+					} else if (user.regimen === 'Monotributo') {
+						SetNetoMonotributo(41990.69);
+					}
+					break;
+				case 3:
+					if (user.regimen === 'Autonomo') {
+						SetNetoAutonomo(58065.53);
+					} else if (user.regimen === 'Monotributo') {
+						SetNetoMonotributo(52488.37);
+					}
+					break;
+				case 4:
+					if (user.regimen === 'Autonomo') {
+						SetNetoAutonomo(69678.65);
+					} else if (user.regimen === 'Monotributo') {
+						SetNetoMonotributo(62986.05);
+					}
+					break;
+				case 5:
+					if (user.regimen === 'Autonomo') {
+						SetNetoAutonomo(81291.75);
+					} else if (user.regimen === 'Monotributo') {
+						SetNetoMonotributo(73483.71);
+					}
+					break;
+				case 6:
+					if (user.regimen === 'Autonomo') {
+						SetNetoAutonomo(92904.87);
+					} else if (user.regimen === 'Monotributo') {
+						SetNetoMonotributo(83981.39);
+					}
+					break;
+				case 7:
+					if (user.regimen === 'Autonomo') {
+						SetNetoAutonomo(104517.97);
+					} else if (user.regimen === 'Monotributo') {
+						SetNetoMonotributo(94479.06);
+					}
+					break;
+				case 8:
+					if (user.regimen === 'Autonomo') {
+						SetNetoAutonomo(116131.08);
+					} else if (user.regimen === 'Monotributo') {
+						SetNetoMonotributo(104976.74);
+					}
+					break;
+				case 9:
+					if (user.regimen === 'Autonomo') {
+						SetNetoAutonomo(127748.37);
+					} else if (user.regimen === 'Monotributo') {
+						SetNetoMonotributo(115474.4);
+					}
+					break;
+				default:
+					Swal.fire({
+						text: 'Criterio fuera de evaluación, consultá en administración',
+						icon: 'info',
+						confirmButtonText: 'ok',
+					});
+					SetAporteRecibMonot(0);
+					SetFinalMonotributo(0);
+					SetNetoAutonomo(0);
+					SetNetoMonotributo(0);
+					SetServMutual(0);
+			} //Devuelve el valor NETO del plan autonomo o monotributo de acuerdo a la cantidad de personas
+		}
 
 		const cantPersonas = () => {
 			if (user.family === 'true') {
