@@ -7,13 +7,7 @@ import {
 	Input,
 	Typography,
 } from '@material-tailwind/react';
-import {
-	Timestamp,
-	addDoc,
-	collection,
-	getDocs,
-	query,
-} from 'firebase/firestore';
+import { addDoc, collection, getDocs, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 import Swal from 'sweetalert2';

@@ -15,11 +15,11 @@ import { useState } from 'react';
 export function Calc() {
 	const [user, SetUser] = useState({
 		plan: '',
-		sexT:'',
-		ageT:'',
-		sexC:'',
-		ageC:'',
-		family: '',
+		sexT: 'M',
+		ageT: '',
+		sexC: '',
+		ageC: '',
+		family: false,
 		quantity: 1,
 		childrens: 0,
 		salary: 0,
@@ -27,10 +27,10 @@ export function Calc() {
 		categoria: '',
 	});
 	const [input, SetInput] = useState('');
+	const [difDeTope, SetDifDeTope] = useState(0);
+	const [fondoJubTitular, SetFondoJubTitular] = useState(parseInt(0));
+	const [fondoJubConyuge, SetFondoJubConyuge] = useState(parseInt(0));
 	const [servMutual, SetServMutual] = useState('');
-	const [fondoJubTit, SetFondoJubTit] = useState('');
-	const [fondoJubCony, SetFondoJubCony] = useState('');
-	const [difDeTope, SetDifDeTope] = useState('');
 	const [aporteRecibMonot, SetAporteRecibMonot] = useState('');
 	const [netoAutonomo, SetNetoAutonomo] = useState('');
 	const [netoMonotributo, SetNetoMonotributo] = useState('');
@@ -39,50 +39,185 @@ export function Calc() {
 	const servMutPart = 6807.59; //Valor del extra para participante
 	const aporteMaximo = 23294.35; //Aporte personal de OS que representa el tope de descuento en el recibo de sueldo (776478.32*3)/100
 	const sepelio = 211;
-	const requeridosGrup = [
-		{
-			Plan: 'PMI',
-			Value: 45818.84,
-		},
-		{
-			Plan: 'PMI2000',
-			Value: 54414.02,
-		},
-		{
-			Plan: 'PMI3000',
-			Value: 66961.69,
-		},
-	]; //Aportes requeridos para ingresos grupales
 
+	const calculoFondoJub = (edad, sexo) => {
+		if (sexo === 'M') {
+			if (edad >= 50 && edad <= 54) {
+				return parseInt(1114);
+			} else if (edad >= 55 && edad <= 59) {
+				return parseInt(2226);
+			} else if (edad >= 60) {
+				return parseInt(3340);
+			} else {
+				return 0;
+			}
+		} else {
+			if (edad >= 45 && edad <= 49) {
+				return parseInt(1114);
+			} else if (edad >= 50 && edad <= 54) {
+				return parseInt(2226);
+			} else if (edad >= 55) {
+				return parseInt(3340);
+			} else {
+				return 0;
+			}
+		}
+	};
+	const calculoDiferenciaTope = (grupo: boolean, regimen, plan, sueldo) => {
+		const requeridosGrupo = [
+			{
+				Plan: 'PMI',
+				value: 45818.84,
+			},
+			{
+				Plan: 'PMI2000',
+				value: 54414.02,
+			},
+			{
+				Plan: 'PMI3000',
+				value: 66961.69,
+			},
+		]; //Aportes requeridos para ingresos grupales
+		const requeridosIndividual = [
+			{
+				Plan: 'PMI',
+				value: 19854.62,
+			},
+			{
+				Plan: 'PMI2000',
+				value: 29934.74,
+			},
+			{
+				Plan: 'PMI3000',
+				value: 45207.92,
+			},
+		]; //Aportes requeridos para ingresos individuales
+
+		if (sueldo >= aporteMaximo) {
+			Swal.fire({
+				text: 'El sueldo calculado es el máximo para el descuento de aportes de Obra Social. Consultá con administración.',
+				icon: 'info',
+				confirmButtonText: 'ok',
+			});
+		} else if (grupo) {
+			const requerido = requeridosGrupo.find(
+				(item) => item.Plan === plan
+			).value;
+			const diferenciaTope = requerido - ((sueldo * 100) / 3) * 0.0765;
+
+			return diferenciaTope;
+		} else {
+			console.log(requeridosIndividual);
+			const requerido = requeridosIndividual.find(
+				(item) => item.Plan === plan
+			).value;
+			const diferenciaTope = requerido - ((sueldo * 100) / 3) * 0.0765;
+
+			return diferenciaTope;
+		}
+	};
+	const cantPersonas = () => {
+		if (user.family === 'true') {
+			SetInput(
+				<div className='flex flex-col justify-center items-center h-full'>
+					<div className='m-1'>
+						<Input
+							label='Cantidad de personas'
+							name='quantity'
+							size='lg'
+							defaultValue={''}
+							onChange={handleChange}
+						/>
+					</div>
+					<div className='m-1'>
+						<Input
+							label='Hijos menores de 10 años'
+							name='childrens'
+							size='lg'
+							defaultValue={''}
+							onChange={handleChange}
+						/>
+					</div>
+					<div className='m-1'>
+						<Input
+							label='Edad de conyuge'
+							name='ageC'
+							size='lg'
+							defaultValue={''}
+							onChange={handleChange}
+						/>
+						<select
+							className='form-select appearance-none
+                        block
+                        w-full
+                        px-3
+                        py-1.5
+                        text-base
+                        font-normal
+                        text-gray-700
+                        bg-white bg-clip-padding bg-no-repeat
+                        border border-solid border-gray-300
+                        rounded
+                        transition
+                        ease-in-out
+                        m-0
+                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+							label='Sexo de conyuge'
+							name='sexC'
+							size='lg'
+							onChange={handleChange}
+						>
+							<option value=''>Sexo de conyuge</option>
+							<option value='M'>M</option>
+							<option value='F'>F</option>
+						</select>
+					</div>
+				</div>
+			);
+		} else {
+			SetUser({ ...user, quantity: parseInt(1) });
+			SetInput('');
+		}
+	};
 	useEffect(() => {
+		cantPersonas();
+		if (user.ageT !== undefined || user.ageT !== '') {
+			const fondoJubTit = calculoFondoJub(user.ageT, user.sexT);
+			SetFondoJubTitular(fondoJubTit);
+
+			if (user.ageC !== undefined || user.ageC !== '') {
+				const fondoJubCony = calculoFondoJub(user.ageC, user.sexC);
+				SetFondoJubConyuge(fondoJubCony);
+			}
+		}
+
 		if (user.regimen !== 'Asalariado') {
 			switch (parseInt(user.quantity)) {
 				case 1:
 					if (user.regimen === 'Autonomo') {
-						if(user.plan === "PMI 2886 Soltero") {
-							if(user.ageT >= 27 && user.ageT <= 30){
-								SetNetoAutonomo(14703.05)
-							} else if (user.ageT <= 26){
-								SetNetoAutonomo(13460.61)
-							} else{
+						if (user.plan === 'PMI 2886 Soltero') {
+							if (user.ageT >= 27 && user.ageT <= 30) {
+								SetNetoAutonomo(14703.05);
+							} else if (user.ageT <= 26) {
+								SetNetoAutonomo(13460.61);
+							} else {
 								Swal.fire({
 									text: 'Si es mayor de 30 años, el plan seleccionado deber no puede ser soltero',
 									icon: 'info',
 									confirmButtonText: 'ok',
 								});
 							}
-						} else if (user.plan === "PMI 2886"){
+						} else if (user.plan === 'PMI 2886') {
 							SetNetoAutonomo(23226.22);
-						} else if (user.plan === "PMI 2886/2000"){
+						} else if (user.plan === 'PMI 2886/2000') {
 							SetNetoAutonomo(36385.07);
 						}
-						
 					} else if (user.regimen === 'Monotributo') {
-						if(user.plan === "PMI Monotributo Soltero") {
-							if(user.ageT >= 27 && user.ageT <= 30){
-								SetNetoMonotributo(13309.57)
-							} else if (user.ageT <= 26){
-								SetNetoMonotributo(12191.70)
+						if (user.plan === 'PMI Monotributo Soltero') {
+							if (user.ageT >= 27 && user.ageT <= 30) {
+								SetNetoMonotributo(13309.57);
+							} else if (user.ageT <= 26) {
+								SetNetoMonotributo(12191.7);
 							} else {
 								Swal.fire({
 									text: 'Si es mayor de 30 años, el plan seleccionado deber no puede ser soltero',
@@ -97,22 +232,21 @@ export function Calc() {
 					break;
 				case 2:
 					if (user.regimen === 'Autonomo') {
-						if(user.plan === "PMI 2886"){
-							SetNetoAutonomo(46452.43);	
+						if (user.plan === 'PMI 2886') {
+							SetNetoAutonomo(46452.43);
 						} else {
-							SetNetoAutonomo (72770.14);
+							SetNetoAutonomo(72770.14);
 						}
-						
 					} else if (user.regimen === 'Monotributo') {
 						SetNetoMonotributo(41990.69);
 					}
 					break;
 				case 3:
 					if (user.regimen === 'Autonomo') {
-						if(user.plan === "PMI 2886"){
-							SetNetoAutonomo(58065.53);	
+						if (user.plan === 'PMI 2886') {
+							SetNetoAutonomo(58065.53);
 						} else {
-							SetNetoAutonomo (90962.67);
+							SetNetoAutonomo(90962.67);
 						}
 					} else if (user.regimen === 'Monotributo') {
 						SetNetoMonotributo(52488.37);
@@ -120,10 +254,10 @@ export function Calc() {
 					break;
 				case 4:
 					if (user.regimen === 'Autonomo') {
-						if(user.plan === "PMI 2886"){
-							SetNetoAutonomo(69678.65);	
+						if (user.plan === 'PMI 2886') {
+							SetNetoAutonomo(69678.65);
 						} else {
-							SetNetoAutonomo (109155.21);
+							SetNetoAutonomo(109155.21);
 						}
 					} else if (user.regimen === 'Monotributo') {
 						SetNetoMonotributo(62986.05);
@@ -131,10 +265,10 @@ export function Calc() {
 					break;
 				case 5:
 					if (user.regimen === 'Autonomo') {
-						if(user.plan === "PMI 2886"){
-							SetNetoAutonomo(81291.75);	
+						if (user.plan === 'PMI 2886') {
+							SetNetoAutonomo(81291.75);
 						} else {
-							SetNetoAutonomo (127347.74);
+							SetNetoAutonomo(127347.74);
 						}
 					} else if (user.regimen === 'Monotributo') {
 						SetNetoMonotributo(73483.71);
@@ -142,10 +276,10 @@ export function Calc() {
 					break;
 				case 6:
 					if (user.regimen === 'Autonomo') {
-						if(user.plan === "PMI 2886"){
-							SetNetoAutonomo(92904.87);	
+						if (user.plan === 'PMI 2886') {
+							SetNetoAutonomo(92904.87);
 						} else {
-							SetNetoAutonomo (145540.28);
+							SetNetoAutonomo(145540.28);
 						}
 					} else if (user.regimen === 'Monotributo') {
 						SetNetoMonotributo(83981.39);
@@ -153,10 +287,10 @@ export function Calc() {
 					break;
 				case 7:
 					if (user.regimen === 'Autonomo') {
-						if(user.plan === "PMI 2886"){
-							SetNetoAutonomo(104517.97);	
+						if (user.plan === 'PMI 2886') {
+							SetNetoAutonomo(104517.97);
 						} else {
-							SetNetoAutonomo (163732.80);
+							SetNetoAutonomo(163732.8);
 						}
 					} else if (user.regimen === 'Monotributo') {
 						SetNetoMonotributo(94479.06);
@@ -164,31 +298,29 @@ export function Calc() {
 					break;
 				case 8:
 					if (user.regimen === 'Autonomo') {
-						if(user.plan === "PMI 2886"){
-							SetNetoAutonomo(116131.08);	
+						if (user.plan === 'PMI 2886') {
+							SetNetoAutonomo(116131.08);
 						} else {
-							SetNetoAutonomo (181925.35);
+							SetNetoAutonomo(181925.35);
 						}
 					} else if (user.regimen === 'Monotributo') {
-						if(user.plan === "PMI 2886"){
-							SetNetoAutonomo(116131.08);	
+						if (user.plan === 'PMI 2886') {
+							SetNetoAutonomo(116131.08);
 						} else {
-							;
 						}
 					}
 					break;
 				case 9:
 					if (user.regimen === 'Autonomo') {
-						if(user.plan === "PMI 2886"){
+						if (user.plan === 'PMI 2886') {
 							SetNetoAutonomo(127748.37);
-						}else {
+						} else {
 							Swal.fire({
 								text: 'El valor del plan PMI 2886/2000 no esta definido para 9 personas.',
 								icon: 'info',
 								confirmButtonText: 'ok',
 							});
 						}
-
 					} else if (user.regimen === 'Monotributo') {
 						SetNetoMonotributo(115474.4);
 					}
@@ -254,143 +386,47 @@ export function Calc() {
 					SetServMutual(0);
 			} //Devuelve el aporte recibido por persona, de acuerdo a la categoria del monotributo
 		}
-
-		if (user.ageT > 44 || user.ageC > 44){
-			if (user.sexC === 'M') {
-				if (user.ageC >= 50 && user.ageC <= 54) {
-					SetFondoJubCony(parseInt(1114))
-				}else if (user.ageC >= 55 && user.ageC <= 59) {
-					SetFondoJubCony(parseInt(2226))
-				} else if (user.ageC >= 60) {
-					SetFondoJubCony(parseInt(3340))
-				}
-			} else {
-				if (user.ageC >= 45 && user.ageC <= 49) {
-					SetFondoJubCony(parseInt(1114))
-				}else if (user.ageC >= 50 && user.ageC <= 54) {
-					SetFondoJubCony(parseInt(2226))
-				} else if (user.ageC >= 55) {
-					SetFondoJubCony(parseInt(3340))
-				}
-			}
-			
-			if (user.sexT === 'M') {
-				if (user.ageT >= 50 && user.ageT <= 54) {
-					SetFondoJubTit(parseInt(1114))
-				}else if (user.ageT >= 55 && user.ageT <= 59) {
-					SetFondoJubTit(parseInt(2226))
-				} else if (user.ageT >= 60) {
-					SetFondoJubTit(parseInt(3340))
-				}
-			} else {
-				if (user.ageT >= 45 && user.ageT <= 49) {
-					SetFondoJubTit(parseInt(1114))
-				}else if (user.ageT >= 50 && user.ageT <= 54) {
-					SetFondoJubTit(parseInt(2226))
-				} else if (user.ageT >= 55) {
-					SetFondoJubTit(parseInt(3340))
-				}
-			}
-		}
-
-		const cantPersonas = () => {
-			if (user.family === 'true') {
-				SetInput(
-					<div className='flex flex-col justify-center items-center h-full'>
-						<div className='m-1'>
-							<Input
-								label='Cantidad de personas'
-								name='quantity'
-								size='lg'
-								defaultValue={''}
-								onChange={handleChange}
-							/>
-						</div>
-						<div className='m-1'>
-							<Input
-								label='Hijos menores de 10 años'
-								name='childrens'
-								size='lg'
-								defaultValue={''}
-								onChange={handleChange}
-							/>
-						</div>
-						<div className='m-1'>
-							<Input
-								label='Edad de conyuge'
-								name='ageC'
-								size='lg'
-								defaultValue={''}
-								onChange={handleChange}
-							/>
-							<select
-							className='form-select appearance-none
-                        block
-                        w-full
-                        px-3
-                        py-1.5
-                        text-base
-                        font-normal
-                        text-gray-700
-                        bg-white bg-clip-padding bg-no-repeat
-                        border border-solid border-gray-300
-                        rounded
-                        transition
-                        ease-in-out
-                        m-0
-                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
-							label='Sexo de conyuge'
-							name='sexC'
-							size='lg'
-							onChange={handleChange}
-						>
-							<option value=''>Sexo de conyuge</option>
-							<option value='M'>M</option>
-							<option value='F'>F</option>
-
-						</select>
-						</div>
-					</div>
-				);
-			} else {
-				SetUser({ ...user, quantity: parseInt(1) });
-				SetInput('');
-			}
-		};
-		cantPersonas();
-	}, [user.family, user.categoria, user.quantity, user.ageC, user.ageT, user.sexT, user.sexC]);
-
-	const requeridosIndiv = [
-		{
-			Plan: 'PMI',
-			Value: 19854.62,
-		},
-		{
-			Plan: 'PMI2000',
-			Value: 29934.74,
-		},
-		{
-			Plan: 'PMI3000',
-			Value: 45207.92,
-		},
-	]; //Aportes requeridos para ingresos individuales
+	}, [
+		user.family,
+		user.categoria,
+		user.quantity,
+		user.ageC,
+		user.ageT,
+		user.sexC,
+		user.sexT,
+		user.salary,
+	]);
 
 	const servicio = () => {
-		const subTotalExtra = servMutTit + (user.quantity - 1) * servMutPart;
-		const totalExtra = subTotalExtra - user.childrens * sepelio + fondoJubCony + fondoJubTit;
-		
-		if(user.regimen !== "Asalariado") {
-			if (user.regimen === "Autonomo" && user.plan === "PMI 2886 SOltero") {
-				SetServMutual(parseFloat(totalExtra).toFixed(2) - parseInt(203)); //Asigna extra mensual de acuerdo a cantidad de personas (restando el sepelio de los menores)
+		if (user.regimen === 'Asalariado') {
+			const diferenciaDeTope = calculoDiferenciaTope(
+				user.family,
+				user.regimen,
+				user.plan,
+				parseFloat(user.salary)
+			);
+			SetDifDeTope(diferenciaDeTope.toFixed(2));
+		}
+
+		const subTotalExtra =
+			parseFloat(servMutTit) + parseFloat((user.quantity - 1) * servMutPart);
+
+		const sepelioMenores = parseInt(user.childrens) * parseFloat(sepelio);
+
+		const totalExtra =
+			subTotalExtra - sepelioMenores + fondoJubConyuge + fondoJubTitular;
+
+		if (user.regimen !== 'Asalariado') {
+			if (user.regimen === 'Autonomo' && user.plan === 'PMI 2886 Soltero') {
+				SetServMutual(totalExtra.toFixed(2) - parseInt(203)); //Asigna extra mensual de acuerdo a cantidad de personas (restando el sepelio de los menores)
 			} else {
-				SetServMutual(parseFloat(totalExtra).toFixed(2)); //Asigna extra mensual de acuerdo a cantidad de personas (restando el sepelio de los menores)		
+				SetServMutual(totalExtra.toFixed(2)); //Asigna extra mensual de acuerdo a cantidad de personas (restando el sepelio de los menores)
 			}
-		
-		}else {
+		} else {
 			if (user.quantity === 1 && user.ageT < 31) {
-				SetServMutual(0)				
-			} else if (user.quantity === 2 && (user.ageT < 31 && user.ageC < 31)){
-				SetServMutual(0)
+				SetServMutual(0);
+			} else if (user.quantity === 2 && user.ageT < 31 && user.ageC < 31) {
+				SetServMutual(0);
 			} else {
 				SetServMutual(parseFloat(totalExtra).toFixed(2)); //Asigna extra mensual de acuerdo a cantidad de personas (restando el sepelio de los menores)
 			}
@@ -406,32 +442,6 @@ export function Calc() {
 				parseFloat(netoMonotributo).toFixed(2) -
 					parseFloat(aporteTotalRecibidoMonot).toFixed(2)
 			);
-		} else {
-			if (user.quantity > 1) {
-				const aporteRecib = ((user.salary * 100) / 3) * 0.0765;
-				const planElegido = user.plan;
-				const requerido = requeridosGrup.find(
-					(item) => item.Plan === planElegido
-				).Value;
-				const difDeTope = requerido - aporteRecib;
-				SetDifDeTope(difDeTope.toFixed(2));
-			} else {
-				const aporteRecib = ((user.salary * 100) / 3) * 0.0765;
-				const planElegido = user.plan;
-				const requerido = requeridosIndiv.find(
-					(item) => item.Plan === planElegido
-				).Value;
-				const difDeTope = requerido - aporteRecib;
-
-				SetDifDeTope(difDeTope.toFixed(2)); //Seteo de diferencia de tope para ingresos individuales
-			}
-			if (user.salary >= aporteMaximo) {
-				Swal.fire({
-					text: 'El sueldo calculado es el máximo para el descuento de aportes de Obra Social. Consultá con administración.',
-					icon: 'info',
-					confirmButtonText: 'ok',
-				});
-			}
 		}
 	};
 
@@ -517,20 +527,24 @@ export function Calc() {
 						{user.regimen === 'Asalariado' && (
 							<option value='PMI3000'>PMI 3000</option>
 						)}
-						{(user.regimen === 'Autonomo' && user.ageT <= 30 && user.quantity === 1) && (
-							<option value='PMI 2886 Soltero'>PMI 2886 Soltero</option>
-						)}
+						{user.regimen === 'Autonomo' &&
+							user.ageT <= 30 &&
+							user.quantity === 1 && (
+								<option value='PMI 2886 Soltero'>PMI 2886 Soltero</option>
+							)}
 						{user.regimen === 'Autonomo' && (
 							<option value='PMI 2886'>PMI 2886</option>
 						)}
 						{user.regimen === 'Autonomo' && (
 							<option value='PMI 2886/2000'>PMI 2886/2000</option>
 						)}
-						{(user.regimen === 'Monotributo' && user.ageT <= 30 && user.quantity === 1) && (
-							<option value='PMI Monotributo Soltero'>
-								PMI Monotributo Soltero
-							</option>
-						)}
+						{user.regimen === 'Monotributo' &&
+							user.ageT <= 30 &&
+							user.quantity === 1 && (
+								<option value='PMI Monotributo Soltero'>
+									PMI Monotributo Soltero
+								</option>
+							)}
 						{user.regimen === 'Monotributo' && (
 							<option value='PMI Monotributo'>PMI Monotributo</option>
 						)}
@@ -560,15 +574,8 @@ export function Calc() {
 						<option value={false}>Individual</option>
 						<option value={true}>Grupo Familiar</option>
 					</select>
-						<div className='m-1'>
-							<Input
-								label='Edad de titular'
-								name='ageT'
-								size='lg'
-								defaultValue={''}
-								onChange={handleChange}
-							/>
-					<select
+					<div className='m-1'>
+						<select
 							className='form-select appearance-none
                         block
                         w-full
@@ -590,12 +597,17 @@ export function Calc() {
 							onChange={handleChange}
 							defaultValue={''}
 						>
-							<option value=''>Sexo de titular</option>
 							<option value='M'>M</option>
 							<option value='F'>F</option>
-
 						</select>
-						</div>
+						<Input
+							label='Edad de titular'
+							name='ageT'
+							size='lg'
+							defaultValue={''}
+							onChange={handleChange}
+						/>
+					</div>
 
 					{input}
 					{user.regimen === 'Asalariado' && (
@@ -659,13 +671,12 @@ export function Calc() {
 						</Typography>
 					</Button>
 				</CardFooter>
-
 				<Typography className='md:text-31l font-bold text-xl' color='green'>
 					Valor Extra: $ {servMutual}
 				</Typography>
 				{user.regimen === 'Asalariado' && (
 					<Typography className='md:text-1xl font-bold text-xl' color='green'>
-						Diferencia de Tope: $ {(difDeTope<0) ? 0 : difDeTope}
+						Diferencia de Tope: $ {difDeTope < 0 ? 0 : difDeTope}
 					</Typography>
 				)}
 				{user.regimen === 'Monotributo' && (
