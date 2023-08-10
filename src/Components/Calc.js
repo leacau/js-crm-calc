@@ -7,10 +7,9 @@ import {
 	Input,
 	Typography,
 } from '@material-tailwind/react';
+import React, { reload, useEffect, useState } from 'react';
 
 import Swal from 'sweetalert2';
-import { useEffect } from 'react';
-import { useState } from 'react';
 
 export function Calc() {
 	const [user, SetUser] = useState({
@@ -39,6 +38,26 @@ export function Calc() {
 	const servMutPart = 6807.59; //Valor del extra para participante
 	const aporteMaximo = 23294.35; //Aporte personal de OS que representa el tope de descuento en el recibo de sueldo (776478.32*3)/100
 	const sepelio = 211;
+
+	const reset = () => {
+		window.location.reload(); /* SetUser({
+			plan: '',
+			sexT: 'M',
+			ageT: '',
+			sexC: '',
+			ageC: '',
+			family: false,
+			quantity: 1,
+			childrens: 0,
+			salary: 0,
+			regimen: '',
+			categoria: '',
+		});
+		SetServMutual(0);
+		SetAporteRecibMonot(0);
+		SetNetoAutonomo(0);
+		SetNetoMonotributo(0); */
+	};
 
 	const calculoFondoJub = (edad, sexo) => {
 		if (sexo === 'M') {
@@ -138,7 +157,7 @@ export function Calc() {
 							onChange={handleChange}
 						/>
 					</div>
-					<div className='m-1'>
+					<div className='m-1 flex-auto'>
 						<Input
 							label='Edad de conyuge'
 							name='ageC'
@@ -156,7 +175,7 @@ export function Calc() {
                         font-normal
                         text-gray-700
                         bg-white bg-clip-padding bg-no-repeat
-                        border border-solid border-gray-300
+                        border border-transparent border-gray-300
                         rounded
                         transition
                         ease-in-out
@@ -395,6 +414,7 @@ export function Calc() {
 		user.sexC,
 		user.sexT,
 		user.salary,
+		user.plan,
 	]);
 
 	const servicio = () => {
@@ -423,9 +443,15 @@ export function Calc() {
 				SetServMutual(totalExtra.toFixed(2)); //Asigna extra mensual de acuerdo a cantidad de personas (restando el sepelio de los menores)
 			}
 		} else {
-			if (user.quantity === 1 && user.ageT < 31) {
+			console.log(user.quantity, user.ageT, user.ageC);
+			if (parseInt(user.quantity) === 1 && parseInt(user.ageT) < 31) {
 				SetServMutual(0);
-			} else if (user.quantity === 2 && user.ageT < 31 && user.ageC < 31) {
+			} else if (
+				parseInt(user.quantity) === 2 &&
+				parseInt(user.ageT) < 31 &&
+				parseInt(user.ageC) < 31 &&
+				parseInt(user.ageC) !== ''
+			) {
 				SetServMutual(0);
 			} else {
 				SetServMutual(parseFloat(totalExtra).toFixed(2)); //Asigna extra mensual de acuerdo a cantidad de personas (restando el sepelio de los menores)
@@ -575,6 +601,13 @@ export function Calc() {
 						<option value={true}>Grupo Familiar</option>
 					</select>
 					<div className='m-1'>
+						<Input
+							label='Edad y sexo del titular'
+							name='ageT'
+							size='lg'
+							defaultValue={''}
+							onChange={handleChange}
+						/>
 						<select
 							className='form-select appearance-none
                         block
@@ -585,7 +618,7 @@ export function Calc() {
                         font-normal
                         text-gray-700
                         bg-white bg-clip-padding bg-no-repeat
-                        border border-solid border-gray-300
+                        border border-transparent border-gray-300
                         rounded
                         transition
                         ease-in-out
@@ -600,13 +633,6 @@ export function Calc() {
 							<option value='M'>M</option>
 							<option value='F'>F</option>
 						</select>
-						<Input
-							label='Edad de titular'
-							name='ageT'
-							size='lg'
-							defaultValue={''}
-							onChange={handleChange}
-						/>
 					</div>
 
 					{input}
@@ -668,6 +694,17 @@ export function Calc() {
 					>
 						<Typography color='blue' className='text-xs'>
 							Calcular
+						</Typography>
+					</Button>
+					<Button
+						variant='gradient'
+						color='white'
+						className='border-red-500 border-2 hover:shadow-blue-200 mt-4'
+						fullWidth
+						onClick={reset}
+					>
+						<Typography color='red' className='text-xs'>
+							Nueva consulta
 						</Typography>
 					</Button>
 				</CardFooter>
