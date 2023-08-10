@@ -697,6 +697,9 @@ export function Calc() {
 					</Typography>
 				)}
 			</Card>
+			<Typography className='md:text-1xl font-bold text-xl' color='green'>
+				Actualización 10.08.2023
+			</Typography>
 		</div>
 	);
 }
