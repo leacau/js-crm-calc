@@ -36,29 +36,11 @@ export function Calc() {
 	const [finalMonotributo, SetFinalMonotributo] = useState('');
 	const servMutTit = 8118.59; //Valor del extra para titular
 	const servMutPart = 6807.59; //Valor del extra para participante
-	const aporteMaximo = 23294.35; //Aporte personal de OS que representa el tope de descuento en el recibo de sueldo (776478.32*3)/100
 	const sepelio = 211;
 
 	const reset = () => {
-		window.location.reload(); /* SetUser({
-			plan: '',
-			sexT: 'M',
-			ageT: '',
-			sexC: '',
-			ageC: '',
-			family: false,
-			quantity: 1,
-			childrens: 0,
-			salary: 0,
-			regimen: '',
-			categoria: '',
-		});
-		SetServMutual(0);
-		SetAporteRecibMonot(0);
-		SetNetoAutonomo(0);
-		SetNetoMonotributo(0); */
+		window.location.reload();
 	};
-
 	const calculoFondoJub = (edad, sexo) => {
 		if (sexo === 'M') {
 			if (edad >= 50 && edad <= 54) {
@@ -82,7 +64,7 @@ export function Calc() {
 			}
 		}
 	};
-	const calculoDiferenciaTope = (grupo: boolean, regimen, plan, sueldo) => {
+	const calculoDiferenciaTope = (grupo, plan, sueldo) => {
 		const requeridosGrupo = [
 			{
 				Plan: 'PMI',
@@ -111,7 +93,7 @@ export function Calc() {
 				value: 45207.92,
 			},
 		]; //Aportes requeridos para ingresos individuales
-
+		const aporteMaximo = 23294.35; //Aporte personal de OS que representa el tope de descuento en el recibo de sueldo (776478.32*3)/100
 		if (sueldo >= aporteMaximo) {
 			Swal.fire({
 				text: 'El sueldo calculado es el máximo para el descuento de aportes de Obra Social. Consultá con administración.',
@@ -119,6 +101,7 @@ export function Calc() {
 				confirmButtonText: 'ok',
 			});
 		} else if (grupo) {
+			console.log(grupo, 'en grupo', typeof grupo);
 			const requerido = requeridosGrupo.find(
 				(item) => item.Plan === plan
 			).value;
@@ -126,7 +109,7 @@ export function Calc() {
 
 			return diferenciaTope;
 		} else {
-			console.log(requeridosIndividual);
+			console.log(grupo, 'en indiv');
 			const requerido = requeridosIndividual.find(
 				(item) => item.Plan === plan
 			).value;
@@ -421,7 +404,6 @@ export function Calc() {
 		if (user.regimen === 'Asalariado') {
 			const diferenciaDeTope = calculoDiferenciaTope(
 				user.family,
-				user.regimen,
 				user.plan,
 				parseFloat(user.salary)
 			);
