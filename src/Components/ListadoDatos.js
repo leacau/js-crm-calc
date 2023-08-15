@@ -20,7 +20,6 @@ export function ListadoDatos() {
 				const completeData = {
 					...doc.data(),
 					id: doc.id,
-					getDate: doc.data().date.toDate(),
 				};
 				ListDatos.push(completeData);
 				setDatos(ListDatos);
@@ -66,9 +65,10 @@ export function ListadoDatos() {
 			editable: false,
 		},
 		{
-			field: 'getDate',
+			field: 'date',
 			headerName: 'Fecha de carga',
 			type: 'date',
+			valueGetter: (params) => params.value.toDate(),
 			width: 500,
 			editable: false,
 		},
@@ -87,11 +87,11 @@ export function ListadoDatos() {
 					initialState={{
 						pagination: {
 							paginationModel: {
-								pageSize: 5,
+								pageSize: 10,
 							},
 						},
 					}}
-					pageSizeOptions={[5]}
+					pageSizeOptions={[10]}
 					disableRowSelectionOnClick
 				/>
 			</Box>
