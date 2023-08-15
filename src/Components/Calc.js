@@ -34,6 +34,7 @@ export function Calc() {
 	const [resultado, SetResultado] = useState(false);
 	const [fondoJubTitular, SetFondoJubTitular] = useState(parseInt(0));
 	const [fondoJubConyuge, SetFondoJubConyuge] = useState(parseInt(0));
+	const [extraMensual, SetExtraMensual] = useState(0);
 	const [finalMonotributo, SetFinalMonotributo] = useState(0);
 	const [finalAutonomo, SetFinalAutonomo] = useState(0);
 	const servMutTit = 8118.59; //Valor del extra para titular
@@ -45,6 +46,15 @@ export function Calc() {
 
 	const reset = () => {
 		window.location.href = window.location;
+	};
+
+	const determinacionExtra = () => {
+		const totalFondoJub = fondoJubTitular + fondoJubConyuge;
+		const extraParticipantes = servMutPart * (datosCalculo.quantity - 1);
+		const sepelioMenores = datosCalculo.childrens * sepelio;
+		const extraMensualTotal =
+			servMutTit + extraParticipantes - sepelioMenores + totalFondoJub;
+		return extraMensualTotal;
 	};
 
 	const cantPersonas = () => {
@@ -111,11 +121,29 @@ export function Calc() {
 		}
 	};
 
-	const totalFondoJub = fondoJubTitular + fondoJubConyuge;
-	const extraParticipantes = servMutPart * (datosCalculo.quantity - 1);
-	const sepelioMenores = datosCalculo.childrens * sepelio;
-	const extraMensual =
-		servMutTit + extraParticipantes - sepelioMenores + totalFondoJub;
+	const calculoExtraMensual = () => {
+		if (datosCalculo.regimen === 'Asalariado') {
+			if (parseInt(datosCalculo.quantity) === 2) {
+				if (datosCalculo.ageC <= 30 && datosCalculo.ageT <= 30) {
+				}
+			} else if (
+				parseInt(datosCalculo.quantity) === 1 &&
+				datosCalculo.ageT <= 30
+			) {
+				SetExtraMensual(0);
+			} else {
+				SetExtraMensual(determinacionExtra());
+			}
+		} else if (datosCalculo.regimen === 'Autonomo') {
+			if (parseInt(datosCalculo.quantity) === 1 && datosCalculo.ageT <= 30) {
+				SetExtraMensual(7915.59);
+			} else {
+				SetExtraMensual(determinacionExtra());
+			}
+		} else {
+			SetExtraMensual(determinacionExtra());
+		}
+	};
 
 	useEffect(() => {
 		setContacto(user);
@@ -139,6 +167,7 @@ export function Calc() {
 
 			SetFinalAutonomo(totalAuto.toFixed(2));
 		}
+		calculoExtraMensual();
 	}, [
 		datosCalculo.ageC,
 		datosCalculo.sexC,
