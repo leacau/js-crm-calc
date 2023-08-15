@@ -29,6 +29,7 @@ export function Calc() {
 		salary: 0,
 		regimen: '',
 		categoria: '',
+		protOdonto: 'NO',
 	});
 	const [input, SetInput] = useState('');
 	const [resultado, SetResultado] = useState(false);
@@ -37,6 +38,7 @@ export function Calc() {
 	const [extraMensual, SetExtraMensual] = useState(0);
 	const [finalMonotributo, SetFinalMonotributo] = useState(0);
 	const [finalAutonomo, SetFinalAutonomo] = useState(0);
+	const [protesisOdonto, SetProtesisOdonto] = useState(0);
 	const servMutTit = 8118.59; //Valor del extra para titular
 	const servMutPart = 6807.59; //Valor del extra para participante
 	const sepelio = 211;
@@ -53,7 +55,11 @@ export function Calc() {
 		const extraParticipantes = servMutPart * (datosCalculo.quantity - 1);
 		const sepelioMenores = datosCalculo.childrens * sepelio;
 		const extraMensualTotal =
-			servMutTit + extraParticipantes - sepelioMenores + totalFondoJub;
+			servMutTit +
+			extraParticipantes -
+			sepelioMenores +
+			totalFondoJub +
+			protesisOdonto;
 		return extraMensualTotal;
 	};
 
@@ -80,6 +86,7 @@ export function Calc() {
 						/>
 					</div>
 					<div className='m-1 flex-auto'>
+						Datos de cónyuge
 						<Input
 							label='Edad de conyuge'
 							name='ageC'
@@ -89,6 +96,7 @@ export function Calc() {
 						/>
 						<select
 							className='form-select appearance-none
+							mt-1
                         block
                         w-full
                         px-3
@@ -122,6 +130,16 @@ export function Calc() {
 	};
 
 	const calculoExtraMensual = () => {
+		console.log(datosCalculo.protOdonto);
+		if (datosCalculo.protOdonto === 'SI') {
+			if (parseInt(datosCalculo.quantity) === 1) {
+				SetProtesisOdonto(1196);
+			} else if (parseInt(datosCalculo.quantity) > 1) {
+				SetProtesisOdonto(753 * datosCalculo.quantity);
+			}
+		} else {
+			SetProtesisOdonto(0);
+		}
 		if (datosCalculo.regimen === 'Asalariado') {
 			if (parseInt(datosCalculo.quantity) === 2) {
 				if (datosCalculo.ageC <= 30 && datosCalculo.ageT <= 30) {
@@ -175,6 +193,7 @@ export function Calc() {
 		datosCalculo.ageT,
 		datosCalculo.regimen,
 		datosCalculo.categoria,
+		datosCalculo.protOdonto,
 		user.ageC,
 		user.sexC,
 		user.sexT,
@@ -186,9 +205,11 @@ export function Calc() {
 		user.quantity,
 		user.regimen,
 		user.salary,
+		user.protOdonto,
 		valorMonotributo,
 		extraMensual,
 		netoAutonomo,
+		protesisOdonto,
 	]);
 
 	const servicio = () => {};
@@ -323,8 +344,9 @@ export function Calc() {
 							<option value='SI'>Grupo Familiar</option>
 						</select>
 						<div className='m-1'>
+							Datos del titular
 							<Input
-								label='Edad y sexo del titular'
+								label='Edad del titular'
 								name='ageT'
 								size='lg'
 								defaultValue={''}
@@ -332,6 +354,7 @@ export function Calc() {
 							/>
 							<select
 								className='form-select appearance-none
+								mt-1
                         block
                         w-full
                         px-3
@@ -359,8 +382,9 @@ export function Calc() {
 						{input}
 						{user.regimen === 'Asalariado' && (
 							<div className='m-1'>
+								Según recibo de sueldo
 								<Input
-									label='Aporte de Obra Social'
+									label='Aporte de obra social'
 									name='salary'
 									size='lg'
 									defaultValue={''}
@@ -400,10 +424,36 @@ export function Calc() {
 								<option value='G'>G</option>
 								<option value='H'>H</option>
 								<option value='I'>I</option>
-								<option value='J'>J</option>
+								<option value='J'>J</option>``
 								<option value='K'>K</option>
 							</select>
 						)}
+						<select
+							className='form-select appearance-none
+								mt-1
+                        block
+                        w-full
+                        px-3
+                        py-1.5
+                        text-base
+                        font-normal
+                        text-gray-700
+                        bg-white bg-clip-padding bg-no-repeat
+                        border border-transparent border-gray-300
+                        rounded
+                        transition
+                        ease-in-out
+                        m-0
+                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+							label='Protesis Odontologica'
+							name='protOdonto'
+							size='lg'
+							onChange={handleChange}
+							defaultValue={''}
+						>
+							<option value='NO'>No</option>
+							<option value='SI'>Si</option>
+						</select>
 					</CardBody>
 					<CardFooter className='pt-0'>
 						<Button
@@ -417,7 +467,7 @@ export function Calc() {
 								Calcular
 							</Typography>
 						</Button>
-						<Button
+						{/* 						<Button
 							variant='gradient'
 							color='white'
 							className='border-red-500 border-2 hover:shadow-blue-200 mt-4'
@@ -427,7 +477,7 @@ export function Calc() {
 							<Typography color='red' className='text-xs'>
 								Nueva consulta
 							</Typography>
-						</Button>
+						</Button> */}
 					</CardFooter>
 					{resultado && (
 						<>
@@ -447,7 +497,7 @@ export function Calc() {
 					className='md:text-1xl font-bold text-xl justify-center'
 					color='green'
 				>
-					Actualización 15-08-2023
+					Actualización 15-08-2023 V3
 				</Typography>
 			</div>
 		</div>

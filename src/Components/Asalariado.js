@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Swal from 'sweetalert2';
 
+import Swal from 'sweetalert2';
 import { Typography } from '@material-tailwind/react';
 import { useAuth } from '../Context/AuthContext';
 
@@ -70,7 +70,6 @@ export function Asalariado() {
 	};
 
 	useEffect(() => {
-		console.log(datosCalculo);
 		if (
 			datosCalculo.regimen === 'Asalariado' &&
 			datosCalculo.salary !== '' &&
@@ -81,6 +80,8 @@ export function Asalariado() {
 				datosCalculo.plan,
 				parseFloat(datosCalculo.salary)
 			);
+		} else {
+			SetDiferenciaTope('Error');
 		}
 	}, [
 		datosCalculo.childrens,
@@ -93,9 +94,17 @@ export function Asalariado() {
 		datosCalculo.sexC,
 	]);
 
-	return (
-		<>
-			<Typography>Total Dif de Tope: $ {diferenciaTope}</Typography>
-		</>
-	);
+	if (diferenciaTope === 'Error') {
+		return (
+			<>
+				<Typography>Error en el aporte informado</Typography>
+			</>
+		);
+	} else {
+		return (
+			<>
+				<Typography>Total Dif de Tope: $ {diferenciaTope}</Typography>
+			</>
+		);
+	}
 }
