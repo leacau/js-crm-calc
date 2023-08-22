@@ -429,7 +429,7 @@ export function Calc() {
 							</Typography>
 						</Button>
 
-						{/* 						<Button
+						<Button
 							variant='gradient'
 							color='white'
 							className='border-red-500 border-2 hover:shadow-blue-200 mt-4'
@@ -439,7 +439,7 @@ export function Calc() {
 							<Typography color='red' className='text-xs'>
 								Nueva consulta
 							</Typography>
-						</Button> */}
+						</Button>
 					</CardFooter>
 					{resultado && (
 						<>
