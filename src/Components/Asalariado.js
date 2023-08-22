@@ -101,10 +101,11 @@ export function Asalariado() {
 			</>
 		);
 	} else {
-		return (
-			<>
-				<Typography>Total Dif de Tope: $ {diferenciaTope}</Typography>
-			</>
-		);
+		return { diferenciaTope };
+		/* 			(
+				<>
+					<Typography>Total Dif de Tope: $ {diferenciaTope}</Typography>
+				</>
+			) */
 	}
 }
