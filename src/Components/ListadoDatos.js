@@ -1,8 +1,8 @@
-import { DataGrid, gridDateFormatter } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react';
+import React, { toDate, useEffect, useState } from 'react';
 import { collection, getDocs, query } from 'firebase/firestore';
 
 import Box from '@mui/material/Box';
+import { DataGrid } from '@mui/x-data-grid';
 import { db } from '../firebase';
 import { useAuth } from '../Context/AuthContext';
 
@@ -12,27 +12,22 @@ export function ListadoDatos() {
 
 	const { user } = useAuth();
 
-	const formateddDate = (date) => {
-		date.toDate().toLocaleDateString('es-AR', {
-			year: 'numeric',
-			month: 'numeric',
-			day: 'numeric',
-		});
-	};
-
 	useEffect(() => {
 		const ListDatos = [];
 		const allDatos = async () => {
 			const querySnapshot = await getDocs(query(collection(db, 'users')));
 			querySnapshot.forEach((doc) => {
-				const completeData = { ...doc.data(), id: doc.id };
+				const completeData = {
+					...doc.data(),
+					id: doc.id,
+				};
 				ListDatos.push(completeData);
 				setDatos(ListDatos);
 				setLoading(false);
 			});
 		};
 		allDatos();
-	}, []);
+	}, [loading]);
 
 	const datosFiltrados = Datos.filter((dato) => dato.owner === user.email);
 
@@ -41,42 +36,42 @@ export function ListadoDatos() {
 			field: 'nombre',
 			headerName: 'Nombre',
 			width: 200,
-			editable: true,
+			editable: false,
 		},
 		{
 			field: 'apellido',
 			headerName: 'Apellido',
 			width: 200,
-			editable: true,
+			editable: false,
 		},
 		{
 			field: 'dni',
 			headerName: 'DNI',
 			type: 'number',
 			width: 200,
-			editable: true,
+			editable: false,
 		},
 		{
 			field: 'email',
 			headerName: 'Email',
 			type: 'email',
 			width: 200,
-			editable: true,
+			editable: false,
 		},
 		{
 			field: 'observaciones',
 			headerName: 'Observaciones',
 			width: 500,
-			editable: true,
+			editable: false,
 		},
-		/* 		{
+		{
 			field: 'date',
 			headerName: 'Fecha de carga',
 			type: 'date',
+			valueGetter: (params) => params.value.toDate(),
 			width: 500,
-			valueFormatter: (params) => formateddDate(params?.date),
-			editable: true,
-		}, */
+			editable: false,
+		},
 	];
 
 	const rows = datosFiltrados;
@@ -92,11 +87,11 @@ export function ListadoDatos() {
 					initialState={{
 						pagination: {
 							paginationModel: {
-								pageSize: 5,
+								pageSize: 10,
 							},
 						},
 					}}
-					pageSizeOptions={[5]}
+					pageSizeOptions={[10]}
 					disableRowSelectionOnClick
 				/>
 			</Box>

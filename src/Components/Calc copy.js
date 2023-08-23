@@ -13,9 +13,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Asalariado } from './Asalariado';
 import { Autonomo } from './Autonomo';
-import { ExtraMensual } from './ExtraMensual';
 import { Monotributo } from './Monotributo';
-import Swal from 'sweetalert2';
 import { useAuth } from '../Context/AuthContext';
 
 export function Calc() {
@@ -35,18 +33,34 @@ export function Calc() {
 	});
 	const [input, SetInput] = useState('');
 	const [resultado, SetResultado] = useState(false);
-	const [finalAsalariado, SetFinalAsalariado] = useState(parseInt(0));
+	const [fondoJubTitular, SetFondoJubTitular] = useState(parseInt(0));
+	const [fondoJubConyuge, SetFondoJubConyuge] = useState(parseInt(0));
+	const [extraMensual, SetExtraMensual] = useState(0);
 	const [finalMonotributo, SetFinalMonotributo] = useState(0);
 	const [finalAutonomo, SetFinalAutonomo] = useState(0);
-
+	const [protesisOdonto, SetProtesisOdonto] = useState(0);
+	const servMutTit = 8118.59; //Valor del extra para titular
+	const servMutPart = 6807.59; //Valor del extra para participante
+	const sepelio = 211;
 	const { datosCalculo, setContacto, calculoFondoJub } = useAuth();
-	const { diferenciaTope } = Asalariado();
 	const { netoAutonomo } = Autonomo();
-	const { extraMensual } = ExtraMensual();
 	const { valorMonotributo } = Monotributo();
 
 	const reset = () => {
-		window.location.href = window.location.href;
+		window.location.href = window.location;
+	};
+
+	const determinacionExtra = () => {
+		const totalFondoJub = fondoJubTitular + fondoJubConyuge;
+		const extraParticipantes = servMutPart * (datosCalculo.quantity - 1);
+		const sepelioMenores = datosCalculo.childrens * sepelio;
+		const extraMensualTotal =
+			servMutTit +
+			extraParticipantes -
+			sepelioMenores +
+			totalFondoJub +
+			protesisOdonto;
+		return extraMensualTotal;
 	};
 
 	const cantPersonas = () => {
@@ -115,42 +129,63 @@ export function Calc() {
 		}
 	};
 
+	const calculoExtraMensual = () => {
+		if (datosCalculo.protOdonto === 'SI') {
+			if (parseInt(datosCalculo.quantity) === 1) {
+				SetProtesisOdonto(1196);
+			} else if (parseInt(datosCalculo.quantity) > 1) {
+				SetProtesisOdonto(753 * datosCalculo.quantity);
+			}
+		} else {
+			SetProtesisOdonto(0);
+		}
+		if (datosCalculo.regimen === 'Asalariado') {
+			if (parseInt(datosCalculo.quantity) === 2) {
+				if (datosCalculo.ageC <= 30 && datosCalculo.ageT <= 30) {
+					SetExtraMensual(0);
+				}
+			} else if (
+				parseInt(datosCalculo.quantity) === 1 &&
+				datosCalculo.ageT <= 30
+			) {
+				SetExtraMensual(0);
+			} else {
+				SetExtraMensual(determinacionExtra());
+			}
+		} else if (datosCalculo.regimen === 'Autonomo') {
+			if (parseInt(datosCalculo.quantity) === 1 && datosCalculo.ageT <= 30) {
+				SetExtraMensual(7915.59);
+			} else {
+				SetExtraMensual(determinacionExtra());
+			}
+		} else {
+			SetExtraMensual(determinacionExtra());
+		}
+	};
+
 	useEffect(() => {
 		setContacto(user);
 		cantPersonas();
 		const fondoJubTit = calculoFondoJub(datosCalculo.ageT, datosCalculo.sexT);
 		const fondoJubCony = calculoFondoJub(datosCalculo.ageC, datosCalculo.sexC);
-
+		SetFondoJubTitular(fondoJubTit);
+		SetFondoJubConyuge(fondoJubCony);
 		if (datosCalculo.regimen === 'Monotributo') {
-			console.log('ENtro en monotributo');
-
 			let subTotalMonot = valorMonotributo;
-			let totalMonot =
-				subTotalMonot + extraMensual + fondoJubTit + fondoJubCony;
+			let totalMonot = subTotalMonot + extraMensual;
 			SetFinalMonotributo(totalMonot);
 		} else if (
 			datosCalculo.regimen === 'Autonomo' &&
 			datosCalculo.plan !== ''
 		) {
-			console.log('ENtro en autonomo');
-
 			const subTotalAutonomo = netoAutonomo;
-
-			const totalAuto =
-				subTotalAutonomo + extraMensual + fondoJubTit + fondoJubCony;
+			console.log(subTotalAutonomo);
+			console.log(extraMensual);
+			const totalAuto = subTotalAutonomo + extraMensual;
 
 			SetFinalAutonomo(totalAuto.toFixed(2));
-		} else if (
-			datosCalculo.regimen === 'Asalariado' &&
-			(datosCalculo.salary !== undefined || datosCalculo.salary !== 0)
-		) {
-			const totalAsalariado =
-				parseFloat(diferenciaTope) +
-				parseFloat(extraMensual) +
-				fondoJubTit +
-				fondoJubCony;
-			SetFinalAsalariado(totalAsalariado);
 		}
+		calculoExtraMensual();
 	}, [
 		datosCalculo.ageC,
 		datosCalculo.sexC,
@@ -159,7 +194,6 @@ export function Calc() {
 		datosCalculo.regimen,
 		datosCalculo.categoria,
 		datosCalculo.protOdonto,
-		datosCalculo.salary,
 		user.ageC,
 		user.sexC,
 		user.sexT,
@@ -175,8 +209,12 @@ export function Calc() {
 		valorMonotributo,
 		extraMensual,
 		netoAutonomo,
-		diferenciaTope,
+		protesisOdonto,
 	]);
+
+	const servicio = () => {
+		console.log(datosCalculo);
+	};
 
 	const handleChange = ({ target: { name, value } }) => {
 		SetUser({ ...user, [name]: value });
@@ -185,25 +223,10 @@ export function Calc() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (user.ageT > 54 || user.ageC > 54) {
-			Swal.fire({
-				text: 'Para ingreso de más de 54 años, tenés que pedir cotización a la administración.',
-				icon: 'info',
-				confirmButtonText: 'ok',
-			}).then((result) => {
-				if (result.isConfirmed) {
-					reset();
-				}
-			});
-		} else if (user.ageT === '') {
-			Swal.fire({
-				text: 'Debés completar la edad del titular',
-				icon: 'info',
-				confirmButtonText: 'ok',
-			});
-		} else {
-			SetResultado(true);
-		}
+		calculoExtraMensual();
+
+		servicio();
+		SetResultado(true);
 	};
 
 	return (
@@ -277,20 +300,24 @@ export function Calc() {
 							{user.regimen === 'Asalariado' && (
 								<option value='PMI3000'>PMI 3000</option>
 							)}
-							{user.regimen === 'Autonomo' && (
-								<option value='PMI 2886 Soltero'>PMI 2886 Soltero</option>
-							)}
+							{user.regimen === 'Autonomo' &&
+								user.ageT <= 30 &&
+								user.quantity === 1 && (
+									<option value='PMI 2886 Soltero'>PMI 2886 Soltero</option>
+								)}
 							{user.regimen === 'Autonomo' && (
 								<option value='PMI 2886'>PMI 2886</option>
 							)}
 							{user.regimen === 'Autonomo' && (
 								<option value='PMI 2886/2000'>PMI 2886/2000</option>
 							)}
-							{user.regimen === 'Monotributo' && (
-								<option value='PMI Monotributo Soltero'>
-									PMI Monotributo Soltero
-								</option>
-							)}
+							{user.regimen === 'Monotributo' &&
+								user.ageT <= 30 &&
+								user.quantity === 1 && (
+									<option value='PMI Monotributo Soltero'>
+										PMI Monotributo Soltero
+									</option>
+								)}
 							{user.regimen === 'Monotributo' && (
 								<option value='PMI Monotributo'>PMI Monotributo</option>
 							)}
@@ -318,12 +345,7 @@ export function Calc() {
 						>
 							<option value=''>Selecciona ingreso</option>
 							<option value='NO'>Individual</option>
-							{user.plan !== 'PMI Monotributo Soltero' &&
-							user.plan !== 'PMI 2886 Soltero' ? (
-								<option value='SI'>Grupo Familiar</option>
-							) : (
-								''
-							)}
+							<option value='SI'>Grupo Familiar</option>
 						</select>
 						<div className='m-1'>
 							<div className='mb-2'>Datos del titular</div>
@@ -449,7 +471,7 @@ export function Calc() {
 								Calcular
 							</Typography>
 						</Button>
-
+						{/* 
 						<Button
 							variant='gradient'
 							color='white'
@@ -460,30 +482,18 @@ export function Calc() {
 							<Typography color='red' className='text-xs'>
 								Nueva consulta
 							</Typography>
-						</Button>
+						</Button> 
+						*/}
 					</CardFooter>
 					{resultado && (
 						<>
-							<div>
-								{user.regimen === 'Asalariado' &&
-									`Extra mensual: $ ${extraMensual}`}
-							</div>
-							<div>
-								{user.regimen === 'Asalariado' &&
-									`Diferencia de tope: $ ${diferenciaTope}`}
-							</div>
-							<div>
-								{user.regimen === 'Asalariado' &&
-									`Total Final: $ ${finalAsalariado}`}
-							</div>
-							<div>
-								{user.regimen === 'Monotributo' &&
-									`Final monotributo: $ ${finalMonotributo.toFixed(2)}`}
-							</div>
-							<div>
-								{user.regimen === 'Autonomo' &&
-									`Final autonomo: $ ${finalAutonomo}`}
-							</div>
+							{user.regimen === 'Asalariado' &&
+								`Extra mensual: $ ${extraMensual}`}
+							{user.regimen === 'Asalariado' && <Asalariado />}
+							{user.regimen === 'Monotributo' &&
+								`Final monotributo: $ ${finalMonotributo.toFixed(2)}`}
+							{user.regimen === 'Autonomo' &&
+								`Final autonomo: $ ${finalAutonomo}`}
 						</>
 					)}
 				</Card>
@@ -493,7 +503,7 @@ export function Calc() {
 					className='md:text-1xl font-bold text-xl justify-center'
 					color='green'
 				>
-					Actualización 23-08-2023 V1
+					Actualización 15-08-2023 V3
 				</Typography>
 			</div>
 		</div>

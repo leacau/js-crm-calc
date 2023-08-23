@@ -23,6 +23,38 @@ export function AuthProvider({ children }) {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 
+	const [datosCalculo, SetDatosCalculo] = useState({
+		regimen: '',
+		plan: '',
+		family: 'NO',
+		quantity: 1,
+		childrens: 0,
+	});
+
+	const calculoFondoJub = (edad, sexo) => {
+		if (sexo === 'M') {
+			if (edad >= 50 && edad <= 54) {
+				return parseInt(1114);
+			} else if (edad >= 55 && edad <= 59) {
+				return parseInt(2226);
+			} else if (edad >= 60) {
+				return parseInt(3340);
+			} else {
+				return 0;
+			}
+		} else {
+			if (edad >= 45 && edad <= 49) {
+				return parseInt(1114);
+			} else if (edad >= 50 && edad <= 54) {
+				return parseInt(2226);
+			} else if (edad >= 55) {
+				return parseInt(3340);
+			} else {
+				return 0;
+			}
+		}
+	};
+
 	const signUp = async (email, password) =>
 		createUserWithEmailAndPassword(auth, email, password);
 
@@ -32,6 +64,10 @@ export function AuthProvider({ children }) {
 	const logOut = () => signOut(auth);
 
 	const resetPassword = (email) => sendPasswordResetEmail(auth, email);
+
+	const setContacto = (datos) => {
+		SetDatosCalculo(datos);
+	};
 
 	useEffect(() => {
 		onAuthStateChanged(auth, (currentUser) => {
@@ -49,6 +85,9 @@ export function AuthProvider({ children }) {
 				logOut,
 				loading,
 				resetPassword,
+				datosCalculo,
+				setContacto,
+				calculoFondoJub,
 			}}
 		>
 			{children}
