@@ -27,6 +27,17 @@ export function Monotributo() {
 								});
 							}
 						} else {
+							if (
+								datosCalculo.ageT <= 30 &&
+								datosCalculo.ageT !== '' &&
+								datosCalculo.ageT > 9
+							) {
+								Swal.fire({
+									text: 'El valor que se devuelve es el correspondiente a un PMI Monotributo, no se tiene el cuenta el beneficio del plan joven',
+									icon: 'info',
+									confirmButtonText: 'ok',
+								});
+							}
 							SetNetoMonotributo(20995.35);
 						}
 

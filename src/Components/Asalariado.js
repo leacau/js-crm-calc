@@ -73,7 +73,8 @@ export function Asalariado() {
 		if (
 			datosCalculo.regimen === 'Asalariado' &&
 			datosCalculo.salary !== '' &&
-			datosCalculo.salary !== 0
+			datosCalculo.salary !== 0 &&
+			datosCalculo.plan !== ''
 		) {
 			calculoDiferenciaTope(
 				datosCalculo.family,
@@ -97,15 +98,10 @@ export function Asalariado() {
 	if (diferenciaTope === 'Error') {
 		return (
 			<>
-				<Typography>Error en el aporte informado</Typography>
+				<Typography>Error en los datos informado</Typography>
 			</>
 		);
 	} else {
 		return { diferenciaTope };
-		/* 			(
-				<>
-					<Typography>Total Dif de Tope: $ {diferenciaTope}</Typography>
-				</>
-			) */
 	}
 }

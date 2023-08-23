@@ -25,6 +25,17 @@ export function Autonomo() {
 								});
 							}
 						} else if (datosCalculo.plan === 'PMI 2886') {
+							if (
+								datosCalculo.ageT <= 30 &&
+								datosCalculo.ageT !== '' &&
+								datosCalculo.ageT > 9
+							) {
+								Swal.fire({
+									text: 'El valor que se devuelve es el correspondiente a un 2886, no se tiene el cuenta el beneficio del plan joven',
+									icon: 'info',
+									confirmButtonText: 'ok',
+								});
+							}
 							SetNetoAutonomo(23226.22);
 						} else if (datosCalculo.plan === 'PMI 2886/2000') {
 							SetNetoAutonomo(36385.07);

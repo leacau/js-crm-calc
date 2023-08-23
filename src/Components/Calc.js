@@ -15,6 +15,7 @@ import { Asalariado } from './Asalariado';
 import { Autonomo } from './Autonomo';
 import { ExtraMensual } from './ExtraMensual';
 import { Monotributo } from './Monotributo';
+import Swal from 'sweetalert2';
 import { useAuth } from '../Context/AuthContext';
 
 export function Calc() {
@@ -45,7 +46,7 @@ export function Calc() {
 	const { valorMonotributo } = Monotributo();
 
 	const reset = () => {
-		window.location.href = window.location;
+		window.location.href = window.location.href;
 	};
 
 	const cantPersonas = () => {
@@ -143,10 +144,11 @@ export function Calc() {
 			datosCalculo.regimen === 'Asalariado' &&
 			(datosCalculo.salary !== undefined || datosCalculo.salary !== 0)
 		) {
-			console.log('ENtro en asalariado');
 			const totalAsalariado =
-				parseFloat(diferenciaTope) + parseFloat(extraMensual);
-			console.log('Total asalariado', totalAsalariado, typeof totalAsalariado);
+				parseFloat(diferenciaTope) +
+				parseFloat(extraMensual) +
+				fondoJubTit +
+				fondoJubCony;
 			SetFinalAsalariado(totalAsalariado);
 		}
 	}, [
@@ -183,7 +185,25 @@ export function Calc() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		SetResultado(true);
+		if (user.ageT > 54 || user.ageC > 54) {
+			Swal.fire({
+				text: 'Para ingreso de más de 54 años, tenés que pedir cotización a la administración.',
+				icon: 'info',
+				confirmButtonText: 'ok',
+			}).then((result) => {
+				if (result.isConfirmed) {
+					reset();
+				}
+			});
+		} else if (user.ageT === '') {
+			Swal.fire({
+				text: 'Debés completar la edad del titular',
+				icon: 'info',
+				confirmButtonText: 'ok',
+			});
+		} else {
+			SetResultado(true);
+		}
 	};
 
 	return (
@@ -257,24 +277,20 @@ export function Calc() {
 							{user.regimen === 'Asalariado' && (
 								<option value='PMI3000'>PMI 3000</option>
 							)}
-							{user.regimen === 'Autonomo' &&
-								user.ageT <= 30 &&
-								user.quantity === 1 && (
-									<option value='PMI 2886 Soltero'>PMI 2886 Soltero</option>
-								)}
+							{user.regimen === 'Autonomo' && (
+								<option value='PMI 2886 Soltero'>PMI 2886 Soltero</option>
+							)}
 							{user.regimen === 'Autonomo' && (
 								<option value='PMI 2886'>PMI 2886</option>
 							)}
 							{user.regimen === 'Autonomo' && (
 								<option value='PMI 2886/2000'>PMI 2886/2000</option>
 							)}
-							{user.regimen === 'Monotributo' &&
-								user.ageT <= 30 &&
-								user.quantity === 1 && (
-									<option value='PMI Monotributo Soltero'>
-										PMI Monotributo Soltero
-									</option>
-								)}
+							{user.regimen === 'Monotributo' && (
+								<option value='PMI Monotributo Soltero'>
+									PMI Monotributo Soltero
+								</option>
+							)}
 							{user.regimen === 'Monotributo' && (
 								<option value='PMI Monotributo'>PMI Monotributo</option>
 							)}
@@ -302,7 +318,12 @@ export function Calc() {
 						>
 							<option value=''>Selecciona ingreso</option>
 							<option value='NO'>Individual</option>
-							<option value='SI'>Grupo Familiar</option>
+							{user.plan !== 'PMI Monotributo Soltero' &&
+							user.plan !== 'PMI 2886 Soltero' ? (
+								<option value='SI'>Grupo Familiar</option>
+							) : (
+								''
+							)}
 						</select>
 						<div className='m-1'>
 							<div className='mb-2'>Datos del titular</div>
@@ -472,7 +493,7 @@ export function Calc() {
 					className='md:text-1xl font-bold text-xl justify-center'
 					color='green'
 				>
-					Actualización 22-08-2023 V1.2
+					Actualización 23-08-2023 V1
 				</Typography>
 			</div>
 		</div>
