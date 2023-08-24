@@ -43,10 +43,9 @@ function App() {
 							<ListadoDatos />
 						</ProtectedRoute>
 					}
-				/>
-				<Route path='/calc' element={<Calc />} /> */}
-				// se elimina temporalmente este código por liberarse la calculadora
-				para los delegados
+				/>*/}
+				<Route path='/calc' element={<Calc />} />
+				{/* se elimina temporalmente este código por liberarse la calculadora para los delegados*/}
 			</Routes>
 		</AuthProvider>
 	);

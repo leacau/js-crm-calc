@@ -150,19 +150,27 @@ export function Calc() {
 				parseFloat(extraMensual) +
 				fondoJubTit +
 				fondoJubCony;
-			SetFinalAsalariado(totalAsalariado);
+			SetFinalAsalariado(parseFloat(totalAsalariado));
 		}
 
 		if (user.ageT === '') {
 			SetError('Debés completar la edad del titular');
+			SetResultado(false);
 		} else if (user.regimen === '') {
 			SetError('Debés seleccionar el regimen.');
+			SetResultado(false);
 		} else if (user.plan === '') {
 			SetError('Debés elegir un plan.');
+			SetResultado(false);
 		} else if (user.family === 'Si' && user.quantity < 2) {
 			SetError('Debés indicar la cantidad de personas');
+			SetResultado(false);
 		} else if (user.regimen === 'Asalariado' && user.salary === 0) {
+			console.log(user.salary);
 			SetError('Debes indicar un aporte de obra social');
+			SetResultado(false);
+		} else {
+			SetError('');
 		}
 	}, [
 		datosCalculo.ageC,
@@ -208,15 +216,15 @@ export function Calc() {
 					reset();
 				}
 			});
-		} else {
-			SetResultado(true);
-		}
-		if (error !== '') {
+		} else if (error !== '') {
+			SetResultado(false);
 			Swal.fire({
 				text: error,
 				icon: 'info',
 				confirmButtonText: 'ok',
 			});
+		} else {
+			SetResultado(true);
 		}
 	};
 

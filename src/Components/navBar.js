@@ -1,67 +1,69 @@
 import {
-    Button,
-    IconButton,
-    MobileNav,
-    Navbar,
-    Typography,
-} from "@material-tailwind/react";
-import { useEffect, useState } from "react";
+	Button,
+	IconButton,
+	MobileNav,
+	Navbar,
+	Typography,
+} from '@material-tailwind/react';
+import { useEffect, useState } from 'react';
 
-import { useAuth } from "../Context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from '../Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export function NavBar() {
-    const { logOut, user } = useAuth();
-    const [openNav, setOpenNav] = useState(false);
-    const navigate = useNavigate();
+	const { logOut, user } = useAuth();
+	const [openNav, setOpenNav] = useState(false);
+	const navigate = useNavigate();
 
-    const handlerLogOut = async () => {
-        if (window.innerWidth < 959) {
-            setOpenNav(!openNav)
-        }; await logOut();
-    };
+	const handlerLogOut = async () => {
+		if (window.innerWidth < 959) {
+			setOpenNav(!openNav);
+		}
+		await logOut();
+	};
 
-    const goToLogin = () => {
+	/*     const goToLogin = () => {
         if (window.innerWidth < 959) {
             setOpenNav(!openNav)
         };
         navigate('/login');
-    }
-
+    } */
+	/* 
     const goToRegister = () => {
         if (window.innerWidth < 959) {
             setOpenNav(!openNav)
         }; navigate('/register');
-    }
+    } */
 
-    const goToList = () => {
+	/*     const goToList = () => {
         if (window.innerWidth < 959) {
             setOpenNav(!openNav)
         }; navigate('/datos');
-    }
+    } */
 
-    const goToAddUser = () => {
+	/*     const goToAddUser = () => {
         if (window.innerWidth < 959) {
             setOpenNav(!openNav)
         }; navigate('/addUser');
-    }
+    } */
 
-    const goToCalc = () => {
-        if (window.innerWidth < 959) {
-            setOpenNav(!openNav)
-        }; navigate('/calc');
-    }
+	const goToCalc = () => {
+		if (window.innerWidth < 959) {
+			setOpenNav(!openNav);
+		}
+		navigate('/calc');
+	};
 
-    useEffect(() => {
-        window.addEventListener(
-            "resize",
-            () => window.innerWidth >= 960 && setOpenNav(false)
-        );
-    }, []);
+	useEffect(() => {
+		window.addEventListener(
+			'resize',
+			() => window.innerWidth >= 960 && setOpenNav(false)
+		);
+	}, []);
 
-    const navList = (
-        <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row items-end lg:gap-6">
-            {!user && (
+	const navList = (
+		<ul className='mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row items-end lg:gap-6'>
+			{/* {!user && (
                 <Typography
                     as="li"
                     variant="small"
@@ -92,22 +94,32 @@ export function NavBar() {
                         </svg>
                     </button>
                 </Typography>
-            )}
-            <Typography
-                as="li"
-                variant="small"
-                color="blue-gray"
-                className="p-1 font-normal"
-            >
-                <button onClick={goToCalc} className="flex items-center">
-                    Calculadora
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 ml-1">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0012 2.25z" />
-                    </svg>
-
-                </button>
-            </Typography>
-            {user && (
+            )} */}
+			<Typography
+				as='li'
+				variant='small'
+				color='blue-gray'
+				className='p-1 font-normal'
+			>
+				<button onClick={goToCalc} className='flex items-center'>
+					Calculadora
+					<svg
+						xmlns='http://www.w3.org/2000/svg'
+						fill='none'
+						viewBox='0 0 24 24'
+						strokeWidth={1.5}
+						stroke='currentColor'
+						className='w-5 h-5 ml-1'
+					>
+						<path
+							strokeLinecap='round'
+							strokeLinejoin='round'
+							d='M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0012 2.25z'
+						/>
+					</svg>
+				</button>
+			</Typography>
+			{/*  {user && (
                 <Typography
                     as="li"
                     variant="small"
@@ -153,62 +165,56 @@ export function NavBar() {
 
                     </Button>
                 </Typography>
-            )}
+            )} */}
+		</ul>
+	);
 
-        </ul>
-    );
-
-    return (
-        <Navbar className="mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4">
-            <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
-                <Typography
-                    variant="small"
-                    className="mr-4 py-1.5 font-normal"
-                >
-                    <span>Jerárquicos Salud - Ventas</span>
-                </Typography>
-                <div className="hidden lg:block">{navList}</div>
-                <IconButton
-                    variant="text"
-                    className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-                    ripple={false}
-                    onClick={() => setOpenNav(!openNav)}
-                >
-                    {openNav ? (
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            className="h-6 w-6"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M6 18L18 6M6 6l12 12"
-                            />
-                        </svg>
-                    ) : (
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M4 6h16M4 12h16M4 18h16"
-                            />
-                        </svg>
-                    )}
-                </IconButton>
-            </div>
-            <MobileNav open={openNav}>
-                {navList}
-            </MobileNav>
-        </Navbar>
-    );
+	return (
+		<Navbar className='mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4'>
+			<div className='container mx-auto flex items-center justify-between text-blue-gray-900'>
+				<Typography variant='small' className='mr-4 py-1.5 font-normal'>
+					<span>Jerárquicos Salud - Ventas</span>
+				</Typography>
+				<div className='hidden lg:block'>{navList}</div>
+				<IconButton
+					variant='text'
+					className='ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden'
+					ripple={false}
+					onClick={() => setOpenNav(!openNav)}
+				>
+					{openNav ? (
+						<svg
+							xmlns='http://www.w3.org/2000/svg'
+							fill='none'
+							className='h-6 w-6'
+							viewBox='0 0 24 24'
+							stroke='currentColor'
+							strokeWidth={2}
+						>
+							<path
+								strokeLinecap='round'
+								strokeLinejoin='round'
+								d='M6 18L18 6M6 6l12 12'
+							/>
+						</svg>
+					) : (
+						<svg
+							xmlns='http://www.w3.org/2000/svg'
+							className='h-6 w-6'
+							fill='none'
+							stroke='currentColor'
+							strokeWidth={2}
+						>
+							<path
+								strokeLinecap='round'
+								strokeLinejoin='round'
+								d='M4 6h16M4 12h16M4 18h16'
+							/>
+						</svg>
+					)}
+				</IconButton>
+			</div>
+			<MobileNav open={openNav}>{navList}</MobileNav>
+		</Navbar>
+	);
 }
