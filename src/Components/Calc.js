@@ -515,7 +515,7 @@ export function Calc() {
 					className='md:text-1xl font-bold text-xl justify-center'
 					color='green'
 				>
-					Actualización 23-08-2023 V1
+					Actualización 24-08-01
 				</Typography>
 			</div>
 		</div>
