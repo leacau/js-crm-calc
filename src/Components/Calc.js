@@ -38,6 +38,7 @@ export function Calc() {
 	const [finalAsalariado, SetFinalAsalariado] = useState(parseInt(0));
 	const [finalMonotributo, SetFinalMonotributo] = useState(0);
 	const [finalAutonomo, SetFinalAutonomo] = useState(0);
+	const [error, SetError] = useState('');
 
 	const { datosCalculo, setContacto, calculoFondoJub } = useAuth();
 	const { diferenciaTope } = Asalariado();
@@ -151,6 +152,18 @@ export function Calc() {
 				fondoJubCony;
 			SetFinalAsalariado(totalAsalariado);
 		}
+
+		if (user.ageT === '') {
+			SetError('Debés completar la edad del titular');
+		} else if (user.regimen === '') {
+			SetError('Debés seleccionar el regimen.');
+		} else if (user.plan === '') {
+			SetError('Debés elegir un plan.');
+		} else if (user.family === 'Si' && user.quantity < 2) {
+			SetError('Debés indicar la cantidad de personas');
+		} else if (user.regimen === 'Asalariado' && user.salary === 0) {
+			SetError('Debes indicar un aporte de obra social');
+		}
 	}, [
 		datosCalculo.ageC,
 		datosCalculo.sexC,
@@ -195,14 +208,15 @@ export function Calc() {
 					reset();
 				}
 			});
-		} else if (user.ageT === '') {
+		} else {
+			SetResultado(true);
+		}
+		if (error !== '') {
 			Swal.fire({
-				text: 'Debés completar la edad del titular',
+				text: error,
 				icon: 'info',
 				confirmButtonText: 'ok',
 			});
-		} else {
-			SetResultado(true);
 		}
 	};
 
