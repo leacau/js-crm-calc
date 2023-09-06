@@ -2,16 +2,16 @@ import './App.css';
 
 import { Route, Routes } from 'react-router-dom';
 
+import { AddUser } from './Components/AddUser';
 import { AuthProvider } from './Context/AuthContext';
 import { Calc } from './Components/Calc';
-import { NavBar } from './Components/navBar';
-import { ProtectedRoute } from './Components/ProtectedRoute';
-
-/* import { Register } from './Components/Register';
+import { Home } from './Components/Home';
 import { ListadoDatos } from './Components/ListadoDatos';
 import { Login } from './Components/Login';
-import { Home } from './Components/Home';
-import { AddUser } from './Components/AddUser'; */ //se elimina temporalmente por liberación a delegados
+import { NavBar } from './Components/navBar';
+import { ProtectedRoute } from './Components/ProtectedRoute';
+import { Reclamos } from './Components/Reclamo';
+import { Register } from './Components/Register';
 
 function App() {
 	return (
@@ -26,7 +26,15 @@ function App() {
 						</ProtectedRoute>
 					}
 				/>
-				{/* 	<Route path='/register' element={<Register />} />
+				<Route
+					path='/reclamos'
+					element={
+						<ProtectedRoute>
+							<Reclamos />
+						</ProtectedRoute>
+					}
+				/>
+				<Route path='/register' element={<Register />} />
 				<Route path='/login' element={<Login />} />
 				<Route
 					path='/addUser'
@@ -43,9 +51,8 @@ function App() {
 							<ListadoDatos />
 						</ProtectedRoute>
 					}
-				/>*/}
+				/>
 				<Route path='/calc' element={<Calc />} />
-				{/* se elimina temporalmente este código por liberarse la calculadora para los delegados*/}
 			</Routes>
 		</AuthProvider>
 	);
