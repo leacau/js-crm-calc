@@ -27,7 +27,7 @@ export function Calc() {
 		derivaC: 'NO',
 		sexC: '',
 		ageC: '',
-		aporteC: '',
+		aporteC: 0,
 		regimenC: '',
 		categoriaC: '',
 		family: 'NO',
@@ -56,92 +56,7 @@ export function Calc() {
 		window.location.href = window.location.href;
 	};
 
-	const conyuge = () => {
-		console.log('funcion conyuge', inputConyuge);
-		if (user.conyuge === 'SI') {
-			SetInputConyuge(
-				<div>
-					<div className='m-1 flex-auto'>
-						Datos de cónyuge
-						<Input
-							label='Edad de conyuge'
-							name='ageC'
-							size='lg'
-							defaultValue={''}
-							onChange={handleChange}
-						/>
-						<select
-							className='form-select appearance-none
-							mt-1
-                        block
-                        w-full
-                        px-3
-                        py-1.5
-                        text-base
-                        font-normal
-                        text-gray-700
-                        bg-white bg-clip-padding bg-no-repeat
-                        border border-transparent border-gray-300
-                        rounded
-                        transition
-                        ease-in-out
-                        m-0
-                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
-							label='Sexo de conyuge'
-							name='sexC'
-							size='lg'
-							onChange={handleChange}
-						>
-							<option value=''>Sexo de conyuge</option>
-							<option value='M'>M</option>
-							<option value='F'>F</option>
-						</select>
-						<select
-							className='form-select appearance-none
-							mt-1
-                        block
-                        w-full
-                        px-3
-                        py-1.5
-                        text-base
-                        font-normal
-                        text-gray-700
-                        bg-white bg-clip-padding bg-no-repeat
-                        border border-transparent border-gray-300
-                        rounded
-                        transition
-                        ease-in-out
-                        m-0
-                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
-							label='Sexo de conyuge'
-							name='derivaC'
-							size='lg'
-							onChange={handleChange}
-						>
-							<option value=''>No</option>
-							<option value='Asalariado'>Asalariado</option>
-							<option value='F'>Monotributo</option>
-						</select>
-					</div>
-				</div>
-			);
-		} else {
-			SetUser({
-				...user,
-				conyuge: 'NO',
-				derivaC: 'NO',
-				sexC: '',
-				ageC: '',
-				aporteC: '',
-				regimenC: '',
-				categoriaC: '',
-			});
-			SetInputConyuge('');
-		}
-	};
-
 	const cantPersonas = () => {
-		console.log('cantidad de personas', input);
 		if (user.family === 'SI') {
 			SetInput(
 				<div className='flex flex-col justify-center items-center h-full'>
@@ -199,7 +114,89 @@ export function Calc() {
 	};
 
 	useEffect(() => {
-		console.log(user.conyuge);
+		const conyuge = () => {
+			if (user.conyuge === 'SI') {
+				SetInputConyuge(
+					<div>
+						<div className='m-1 flex-auto'>
+							Datos de cónyuge
+							<Input
+								label='Edad de conyuge'
+								name='ageC'
+								size='lg'
+								defaultValue={''}
+								onChange={handleChange}
+							/>
+							<select
+								className='form-select appearance-none
+								mt-1
+							block
+							w-full
+							px-3
+							py-1.5
+							text-base
+							font-normal
+							text-gray-700
+							bg-white bg-clip-padding bg-no-repeat
+							border border-transparent border-gray-300
+							rounded
+							transition
+							ease-in-out
+							m-0
+							focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+								label='Sexo de conyuge'
+								name='sexC'
+								size='lg'
+								onChange={handleChange}
+							>
+								<option value=''>Sexo de conyuge</option>
+								<option value='M'>M</option>
+								<option value='F'>F</option>
+							</select>
+							Deriva aportes?
+							<select
+								className='form-select appearance-none
+								mt-1
+							block
+							w-full
+							px-3
+							py-1.5
+							text-base
+							font-normal
+							text-gray-700
+							bg-white bg-clip-padding bg-no-repeat
+							border border-transparent border-gray-300
+							rounded
+							transition
+							ease-in-out
+							m-0
+							focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+								label='Sexo de conyuge'
+								name='regimenC'
+								size='lg'
+								onChange={handleChange}
+							>
+								<option value=''>No</option>
+								<option value='Asalariado'>Asalariado</option>
+								<option value='Monotributo'>Monotributo</option>
+							</select>
+						</div>
+					</div>
+				);
+			} else {
+				SetUser({
+					...user,
+					conyuge: 'NO',
+					derivaC: 'NO',
+					sexC: '',
+					ageC: '',
+					aporteC: '',
+					regimenC: '',
+					categoriaC: '',
+				});
+				SetInputConyuge('');
+			}
+		};
 		setContacto(user);
 		conyuge();
 		cantPersonas();
@@ -247,7 +244,6 @@ export function Calc() {
 			SetError('Debés indicar la cantidad de personas');
 			SetResultado(false);
 		} else if (user.regimen === 'Asalariado' && user.salary === 0) {
-			console.log(user.salary);
 			SetError('Debes indicar un aporte de obra social');
 			SetResultado(false);
 		} else {
@@ -262,7 +258,13 @@ export function Calc() {
 		datosCalculo.categoria,
 		datosCalculo.protOdonto,
 		datosCalculo.salary,
+		datosCalculo.aporteC,
+		datosCalculo.categoriaC,
+		datosCalculo.regimenC,
 		user.ageC,
+		user.aporteC,
+		user.categoriaC,
+		user.regimenC,
 		user.sexC,
 		user.sexT,
 		user.ageT,
@@ -469,7 +471,7 @@ export function Calc() {
 						{inputConyuge}
 						{user.regimen === 'Asalariado' && (
 							<div className='m-1'>
-								<div className='mb-2'>Según recibo de sueldo</div>
+								<div className='mb-2'>Según recibo de sueldo Titular</div>
 								<Input
 									label='Aporte de obra social'
 									name='salary'
@@ -477,6 +479,57 @@ export function Calc() {
 									defaultValue={''}
 									onChange={handleChange}
 								/>
+							</div>
+						)}
+						{user.regimenC === 'Asalariado' && (
+							<div className='m-1'>
+								<div className='mb-2'>Según recibo de sueldo Conyuge</div>
+								<Input
+									label='Aporte de obra social'
+									name='aporteC'
+									size='lg'
+									defaultValue={''}
+									onChange={handleChange}
+								/>
+							</div>
+						)}
+						{user.regimenC === 'Monotributo' && (
+							<div>
+								<div className='mb-2'>Categoria de Conyuge</div>
+
+								<select
+									className='form-select appearance-none
+                        block
+                        w-full
+                        px-3
+                        py-1.5
+                        text-base
+                        font-normal
+                        text-gray-700
+                        bg-white bg-clip-padding bg-no-repeat
+                        border border-solid border-gray-300
+                        rounded
+                        transition
+                        ease-in-out
+                        m-0
+                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+									aria-label='Default select example'
+									name='categoriaC'
+									size='lg'
+									onChange={handleChange}
+								>
+									<option value='A'>A</option>
+									<option value='B'>B</option>
+									<option value='C'>C</option>
+									<option value='D'>D</option>
+									<option value='E'>E</option>
+									<option value='F'>F</option>
+									<option value='G'>G</option>
+									<option value='H'>H</option>
+									<option value='I'>I</option>
+									<option value='J'>J</option>
+									<option value='K'>K</option>
+								</select>
 							</div>
 						)}
 						{user.regimen === 'Monotributo' && (
@@ -511,7 +564,7 @@ export function Calc() {
 								<option value='G'>G</option>
 								<option value='H'>H</option>
 								<option value='I'>I</option>
-								<option value='J'>J</option>``
+								<option value='J'>J</option>
 								<option value='K'>K</option>
 							</select>
 						)}
