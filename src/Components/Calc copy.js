@@ -179,8 +179,6 @@ export function Calc() {
 			datosCalculo.plan !== ''
 		) {
 			const subTotalAutonomo = netoAutonomo;
-			console.log(subTotalAutonomo);
-			console.log(extraMensual);
 			const totalAuto = subTotalAutonomo + extraMensual;
 
 			SetFinalAutonomo(totalAuto.toFixed(2));
@@ -212,10 +210,6 @@ export function Calc() {
 		protesisOdonto,
 	]);
 
-	const servicio = () => {
-		console.log(datosCalculo);
-	};
-
 	const handleChange = ({ target: { name, value } }) => {
 		SetUser({ ...user, [name]: value });
 		SetResultado(false);
@@ -225,7 +219,6 @@ export function Calc() {
 		e.preventDefault();
 		calculoExtraMensual();
 
-		servicio();
 		SetResultado(true);
 	};
 

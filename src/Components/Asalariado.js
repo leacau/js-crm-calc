@@ -10,8 +10,6 @@ export function Asalariado() {
 	const [sueldoConyuge, SetSueldoConyuge] = useState(0);
 
 	useEffect(() => {
-		console.log(datosCalculo.aporteC);
-		console.log(datosCalculo.regimenC);
 		const calculoDiferenciaTope = (grupo, plan, sueldo, regimenC, aporteC) => {
 			const requeridosGrupo = [
 				{
@@ -56,7 +54,6 @@ export function Asalariado() {
 
 				if (regimenC === 'Asalariado' && aporteC !== '' && aporteC !== NaN) {
 					const sueldoCony = ((aporteC * 100) / 3) * 0.0765;
-					console.log(sueldoCony);
 					SetSueldoConyuge(sueldoCony);
 				} else if (regimenC === 'Monotributo') {
 					SetSueldoConyuge(0);
@@ -69,7 +66,6 @@ export function Asalariado() {
 					parseFloat(sueldoTitular) -
 					parseFloat(sueldoConyuge);
 
-				console.log(regimenC);
 				if (difTope > 0) {
 					SetDiferenciaTope(difTope.toFixed(2));
 				} else {

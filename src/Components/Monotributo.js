@@ -134,7 +134,6 @@ export function Monotributo() {
 		}
 
 		if (datosCalculo.regimenC === 'Monotributo') {
-			console.log(datosCalculo.regimenC);
 			switch (datosCalculo.categoriaC) {
 				case 'A':
 					SetAporteMonotCony(2755.58);

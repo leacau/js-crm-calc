@@ -52,7 +52,6 @@ export function Calc() {
 	const { netoAutonomo } = Autonomo();
 	const { extraMensual } = ExtraMensual();
 	const { valorMonotributo, aporteMonotCony } = Monotributo();
-	console.log(aporteMonotCony);
 
 	const reset = () => {
 		window.location.href = window.location.href;
