@@ -15,53 +15,53 @@ export function NavBar() {
 	const [openNav, setOpenNav] = useState(false);
 	const navigate = useNavigate();
 
-	const handlerLogOut = async () => {
+	/* 	const handlerLogOut = async () => {
 		if (window.innerWidth < 959) {
 			setOpenNav(!openNav);
 		}
 		await logOut();
-	};
+	}; */
 
-	const goToLogin = () => {
+	/* 	const goToLogin = () => {
 		if (window.innerWidth < 959) {
 			setOpenNav(!openNav);
 		}
 		navigate('/login');
-	};
-
+	}; */
+	/* 
 	const goToRegister = () => {
 		if (window.innerWidth < 959) {
 			setOpenNav(!openNav);
 		}
 		navigate('/register');
-	};
+	}; */
 
-	const goToList = () => {
+	/* 	const goToList = () => {
 		if (window.innerWidth < 959) {
 			setOpenNav(!openNav);
 		}
 		navigate('/datos');
-	};
+	}; */
 
-	const goToAddUser = () => {
+	/* 	const goToAddUser = () => {
 		if (window.innerWidth < 959) {
 			setOpenNav(!openNav);
 		}
 		navigate('/addUser');
 	};
-
+ */
 	const goToCalc = () => {
 		if (window.innerWidth < 959) {
 			setOpenNav(!openNav);
 		}
 		navigate('/calc');
 	};
-	const goToRecl = () => {
+	/* 	const goToRecl = () => {
 		if (window.innerWidth < 959) {
 			setOpenNav(!openNav);
 		}
 		navigate('/reclamos');
-	};
+	}; */
 
 	useEffect(() => {
 		window.addEventListener(
@@ -72,7 +72,7 @@ export function NavBar() {
 
 	const navList = (
 		<ul className='mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row items-end lg:gap-6'>
-			{!user && (
+			{/* 	{!user && (
 				<Typography
 					as='li'
 					variant='small'
@@ -97,9 +97,9 @@ export function NavBar() {
 						</svg>
 					</button>
 				</Typography>
-			)}
+			)} */}
 
-			{!user && (
+			{/* 	{!user && (
 				<Typography
 					as='li'
 					variant='small'
@@ -124,7 +124,7 @@ export function NavBar() {
 						</svg>
 					</button>
 				</Typography>
-			)}
+			)} */}
 			<Typography
 				as='li'
 				variant='small'
@@ -149,7 +149,7 @@ export function NavBar() {
 					</svg>
 				</button>
 			</Typography>
-			<Typography
+			{/* 			<Typography
 				as='li'
 				variant='small'
 				color='blue-gray'
@@ -166,8 +166,8 @@ export function NavBar() {
 						<path d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z' />
 					</svg>
 				</button>
-			</Typography>
-			{user && (
+			</Typography> */}
+			{/* {user && (
 				<Typography
 					as='li'
 					variant='small'
@@ -248,7 +248,7 @@ export function NavBar() {
 						</svg>
 					</Button>
 				</Typography>
-			)}
+			)} */}
 		</ul>
 	);
 
