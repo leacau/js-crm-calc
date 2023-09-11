@@ -44,13 +44,15 @@ export function Calc() {
 	const [finalAsalariado, SetFinalAsalariado] = useState(parseInt(0));
 	const [finalMonotributo, SetFinalMonotributo] = useState(0);
 	const [finalAutonomo, SetFinalAutonomo] = useState(0);
+	const [finalDifTope, SetFinalDifTope] = useState(0);
 	const [error, SetError] = useState('');
 
 	const { datosCalculo, setContacto, calculoFondoJub } = useAuth();
 	const { diferenciaTope } = Asalariado();
 	const { netoAutonomo } = Autonomo();
 	const { extraMensual } = ExtraMensual();
-	const { valorMonotributo, aporteMonotributo } = Monotributo();
+	const { valorMonotributo, aporteMonotCony } = Monotributo();
+	console.log(aporteMonotCony);
 
 	const reset = () => {
 		window.location.href = window.location.href;
@@ -177,8 +179,13 @@ export function Calc() {
 								onChange={handleChange}
 							>
 								<option value=''>No</option>
-								<option value='Asalariado'>Asalariado</option>
-								<option value='Monotributo'>Monotributo</option>
+								{user.regimen === 'Asalariado' && (
+									<option value='Asalariado'>Asalariado</option>
+								)}
+
+								{user.regimen !== 'Autonomo' && (
+									<option value='Monotributo'>Monotributo</option>
+								)}
 							</select>
 						</div>
 					</div>
@@ -200,6 +207,10 @@ export function Calc() {
 		setContacto(user);
 		conyuge();
 		cantPersonas();
+
+		const difTopeFinal =
+			parseFloat(diferenciaTope) - parseFloat(aporteMonotCony);
+		SetFinalDifTope(parseFloat(difTopeFinal));
 
 		const fondoJubTit = calculoFondoJub(datosCalculo.ageT, datosCalculo.sexT);
 		const fondoJubCony = calculoFondoJub(datosCalculo.ageC, datosCalculo.sexC);
@@ -225,7 +236,8 @@ export function Calc() {
 		) {
 			const totalAsalariado =
 				parseFloat(diferenciaTope) +
-				parseFloat(extraMensual) +
+				parseFloat(extraMensual) -
+				parseFloat(aporteMonotCony) +
 				fondoJubTit +
 				fondoJubCony;
 			SetFinalAsalariado(parseFloat(totalAsalariado));
@@ -281,6 +293,8 @@ export function Calc() {
 		extraMensual,
 		netoAutonomo,
 		diferenciaTope,
+		finalDifTope,
+		aporteMonotCony,
 	]);
 
 	const handleChange = ({ target: { name, value } }) => {
@@ -481,7 +495,7 @@ export function Calc() {
 								/>
 							</div>
 						)}
-						{user.regimenC === 'Asalariado' && (
+						{user.regimenC === 'Asalariado' && user.regimen !== 'Autonomo' && (
 							<div className='m-1'>
 								<div className='mb-2'>Según recibo de sueldo Conyuge</div>
 								<Input
@@ -493,7 +507,7 @@ export function Calc() {
 								/>
 							</div>
 						)}
-						{user.regimenC === 'Monotributo' && (
+						{user.regimenC === 'Monotributo' && user.regimen !== 'Autonomo' && (
 							<div>
 								<div className='mb-2'>Categoria de Conyuge</div>
 
@@ -518,6 +532,7 @@ export function Calc() {
 									size='lg'
 									onChange={handleChange}
 								>
+									<option value=''>Seleccioná la categoría</option>
 									<option value='A'>A</option>
 									<option value='B'>B</option>
 									<option value='C'>C</option>
@@ -628,7 +643,7 @@ export function Calc() {
 							</div>
 							<div>
 								{user.regimen === 'Asalariado' &&
-									`Diferencia de tope: $ ${diferenciaTope}`}
+									`Diferencia de tope: $ ${finalDifTope}`}
 							</div>
 							<div>
 								{user.regimen === 'Asalariado' &&

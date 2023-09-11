@@ -11,6 +11,7 @@ export function Asalariado() {
 
 	useEffect(() => {
 		console.log(datosCalculo.aporteC);
+		console.log(datosCalculo.regimenC);
 		const calculoDiferenciaTope = (grupo, plan, sueldo, regimenC, aporteC) => {
 			const requeridosGrupo = [
 				{
@@ -58,7 +59,7 @@ export function Asalariado() {
 					console.log(sueldoCony);
 					SetSueldoConyuge(sueldoCony);
 				} else if (regimenC === 'Monotributo') {
-					SetSueldoConyuge(aporteC);
+					SetSueldoConyuge(0);
 				} else {
 					SetSueldoConyuge(0);
 				}
@@ -116,6 +117,7 @@ export function Asalariado() {
 		datosCalculo.sexC,
 		datosCalculo.aporteC,
 		datosCalculo.regimenC,
+		datosCalculo.categoriaC,
 		sueldoConyuge,
 		datosCalculo,
 	]);

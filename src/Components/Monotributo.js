@@ -4,10 +4,11 @@ import Swal from 'sweetalert2';
 import { useAuth } from '../Context/AuthContext';
 
 export function Monotributo() {
-	const { datosCalculo } = useAuth();
+	const { datosCalculo, setContacto } = useAuth();
 	const [netoMonotributo, SetNetoMonotributo] = useState();
 	const [aporteMonotributo, SetAporteMonotributo] = useState();
 	const [valorMonotributo, SetValorMonotributo] = useState();
+	const [aporteMonotCony, SetAporteMonotCony] = useState(0);
 
 	useEffect(() => {
 		if (datosCalculo.regimen === 'Monotributo') {
@@ -131,19 +132,73 @@ export function Monotributo() {
 			const finalMonotrinuto = netoMonotributo - aporteRecibidoTotal;
 			SetValorMonotributo(finalMonotrinuto);
 		}
+
+		if (datosCalculo.regimenC === 'Monotributo') {
+			console.log(datosCalculo.regimenC);
+			switch (datosCalculo.categoriaC) {
+				case 'A':
+					SetAporteMonotCony(2755.58);
+					break;
+				case 'B':
+					SetAporteMonotCony(2755.58);
+					break;
+				case 'C':
+					SetAporteMonotCony(2755.58);
+					break;
+				case 'D':
+					SetAporteMonotCony(3274.43);
+					break;
+				case 'E':
+					SetAporteMonotCony(4006.82);
+					break;
+				case 'F':
+					SetAporteMonotCony(4630.52);
+					break;
+				case 'G':
+					SetAporteMonotCony(4961.27);
+					break;
+				case 'H':
+					SetAporteMonotCony(5953.52);
+					break;
+				case 'I':
+					SetAporteMonotCony(7371.03);
+					break;
+				case 'J':
+					SetAporteMonotCony(8249.88);
+					break;
+				case 'K':
+					SetAporteMonotCony(9454.76);
+					break;
+				case '':
+					break;
+				default:
+					Swal.fire({
+						text: 'Categoria inexistente, consultá en administración',
+						icon: 'info',
+						confirmButtonText: 'ok',
+					});
+					SetAporteMonotCony(0);
+					setContacto({ ...datosCalculo, aporteC: 0 });
+				//Devuelve el aporte recibido por persona, de acuerdo a la categoria del monotributo
+			}
+		}
 	}, [
 		datosCalculo.regimen,
+		datosCalculo.aporteC,
+		datosCalculo.regimenC,
 		datosCalculo.categoria,
 		datosCalculo.quantity,
 		datosCalculo.plan,
 		datosCalculo.family,
 		datosCalculo.ageT,
+		datosCalculo.categoriaC,
+		datosCalculo,
 		datosCalculo.ageC,
 		aporteMonotributo,
 		netoMonotributo,
 	]);
 
-	return { valorMonotributo, aporteMonotributo };
+	return { valorMonotributo, aporteMonotCony };
 	/* 		<>
 			<Typography>
 				Final Monotributo - Sin extra: $ {netoMonotributo}
