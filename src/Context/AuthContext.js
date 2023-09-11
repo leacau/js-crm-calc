@@ -1,39 +1,96 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createContext, useContext, useEffect, useState } from 'react';
+import {
+	createUserWithEmailAndPassword,
+	onAuthStateChanged,
+	sendPasswordResetEmail,
+	signInWithEmailAndPassword,
+	signOut,
+} from 'firebase/auth';
 
-import { auth } from "../firebase";
+import { auth } from '../firebase';
 
 export const authContext = createContext();
 
 export const useAuth = () => {
-    const context = useContext(authContext);
-    if (!context) {
-        throw new Error("useAuth debe estar dentro del proveedor de Auth");
-    };
-    return context;
-}
+	const context = useContext(authContext);
+	if (!context) {
+		throw new Error('useAuth debe estar dentro del proveedor de Auth');
+	}
+	return context;
+};
 
 export function AuthProvider({ children }) {
+	const [user, setUser] = useState(null);
+	const [loading, setLoading] = useState(true);
 
-    const [user, setUser] = useState(null);
+	const [datosCalculo, SetDatosCalculo] = useState({
+		regimen: '',
+		plan: '',
+		family: 'NO',
+		quantity: 1,
+		childrens: 0,
+	});
 
-    const signUp = (email, password) => createUserWithEmailAndPassword(auth, email, password);
+	const calculoFondoJub = (edad, sexo) => {
+		if (sexo === 'M') {
+			if (edad >= 50 && edad <= 54) {
+				return parseInt(1114);
+			} else if (edad >= 55 && edad <= 59) {
+				return parseInt(2226);
+			} else if (edad >= 60) {
+				return parseInt(3340);
+			} else {
+				return 0;
+			}
+		} else {
+			if (edad >= 45 && edad <= 49) {
+				return parseInt(1114);
+			} else if (edad >= 50 && edad <= 54) {
+				return parseInt(2226);
+			} else if (edad >= 55) {
+				return parseInt(3340);
+			} else {
+				return 0;
+			}
+		}
+	};
 
-    const signIn = (email, password) => signInWithEmailAndPassword(auth, email, password);
+	const signUp = async (email, password) =>
+		createUserWithEmailAndPassword(auth, email, password);
 
-    const logOut = () => signOut(auth);
+	const signIn = (email, password) =>
+		signInWithEmailAndPassword(auth, email, password);
 
-    useEffect(() => {
-        onAuthStateChanged(auth, currentUser => {
-            setUser(currentUser);
-        })
-    }, [])
+	const logOut = () => signOut(auth);
 
+	const resetPassword = (email) => sendPasswordResetEmail(auth, email);
 
+	const setContacto = (datos) => {
+		SetDatosCalculo(datos);
+	};
 
-    return (
-        <authContext.Provider value={{ signUp, signIn, user, logOut }}>
-            {children}
-        </authContext.Provider>
-    )
+	useEffect(() => {
+		onAuthStateChanged(auth, (currentUser) => {
+			setUser(currentUser);
+			setLoading(false);
+		});
+	}, []);
+
+	return (
+		<authContext.Provider
+			value={{
+				signUp,
+				signIn,
+				user,
+				logOut,
+				loading,
+				resetPassword,
+				datosCalculo,
+				setContacto,
+				calculoFondoJub,
+			}}
+		>
+			{children}
+		</authContext.Provider>
+	);
 }
