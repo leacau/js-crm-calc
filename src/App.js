@@ -5,12 +5,12 @@ import { Route, Routes } from 'react-router-dom';
 import { AddUser } from './Components/AddUser';
 import { AuthProvider } from './Context/AuthContext';
 import { Calc } from './Components/Calc';
-import { Calculate } from './Components/logic';
 import { Home } from './Components/Home';
 import { ListadoDatos } from './Components/ListadoDatos';
 import { Login } from './Components/Login';
 import { NavBar } from './Components/navBar';
 import { ProtectedRoute } from './Components/ProtectedRoute';
+import { Reclamos } from './Components/Reclamo';
 import { Register } from './Components/Register';
 
 function App() {
@@ -22,7 +22,15 @@ function App() {
 					path='/'
 					element={
 						<ProtectedRoute>
-							<Home />
+							<Calc />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path='/reclamos'
+					element={
+						<ProtectedRoute>
+							<Reclamos />
 						</ProtectedRoute>
 					}
 				/>

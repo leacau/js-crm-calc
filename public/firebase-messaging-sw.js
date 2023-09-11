@@ -1,9 +1,11 @@
 // Import the functions you need from the SDKs you need
 
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getMessaging } from 'firebase/messaging';
-import { initializeApp } from 'firebase/app';
+importScripts(
+	'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js'
+);
+importScripts(
+	'https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js'
+);
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -21,7 +23,20 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const messaging = getMessaging(app);
+const app = firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging(app);
+
+messaging.onBackgroundMessage((payload) => {
+	console.log('Recibiste mensaje mientras estabas ausente');
+	// previo a mostrar notificación
+	const notificationTitle = payload.notification.title;
+	const notificationOptions = {
+		body: payload.notification.body,
+		icon: '/logo.png',
+	};
+
+	return self.registration.showNotification(
+		notificationTitle,
+		notificationOptions
+	);
+});

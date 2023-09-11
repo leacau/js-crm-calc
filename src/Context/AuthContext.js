@@ -34,21 +34,21 @@ export function AuthProvider({ children }) {
 	const calculoFondoJub = (edad, sexo) => {
 		if (sexo === 'M') {
 			if (edad >= 50 && edad <= 54) {
-				return parseInt(1114);
+				return parseInt(1192);
 			} else if (edad >= 55 && edad <= 59) {
-				return parseInt(2226);
+				return parseInt(2381);
 			} else if (edad >= 60) {
-				return parseInt(3340);
+				return parseInt(3572);
 			} else {
 				return 0;
 			}
 		} else {
 			if (edad >= 45 && edad <= 49) {
-				return parseInt(1114);
+				return parseInt(1192);
 			} else if (edad >= 50 && edad <= 54) {
-				return parseInt(2226);
+				return parseInt(2381);
 			} else if (edad >= 55) {
-				return parseInt(3340);
+				return parseInt(3572);
 			} else {
 				return 0;
 			}
