@@ -14,9 +14,9 @@ export function Autonomo() {
 					case 1:
 						if (datosCalculo.plan === 'PMI 2886 Soltero') {
 							if (datosCalculo.ageT >= 27 && datosCalculo.ageT <= 30) {
-								SetNetoAutonomo(14703.05);
+								SetNetoAutonomo(17454.78);
 							} else if (datosCalculo.ageT <= 26) {
-								SetNetoAutonomo(13460.61);
+								SetNetoAutonomo(15979.8);
 							} else {
 								Swal.fire({
 									text: 'Si es mayor de 30 años, el plan seleccionado deber no puede ser soltero',
@@ -36,71 +36,71 @@ export function Autonomo() {
 									confirmButtonText: 'ok',
 								});
 							}
-							SetNetoAutonomo(23226.22);
+							SetNetoAutonomo(27573.07);
 						} else if (datosCalculo.plan === 'PMI 2886/2000') {
-							SetNetoAutonomo(36385.07);
+							SetNetoAutonomo(43194.65);
 						}
 
 						break;
 					case 2:
 						if (datosCalculo.plan === 'PMI 2886') {
-							SetNetoAutonomo(46452.43);
+							SetNetoAutonomo(55146.15);
 						} else {
-							SetNetoAutonomo(72770.14);
+							SetNetoAutonomo(86389.29);
 						}
 
 						break;
 					case 3:
 						if (datosCalculo.plan === 'PMI 2886') {
-							SetNetoAutonomo(58065.53);
+							SetNetoAutonomo(68932.68);
 						} else {
-							SetNetoAutonomo(90962.67);
+							SetNetoAutonomo(107986.61);
 						}
 
 						break;
 					case 4:
 						if (datosCalculo.plan === 'PMI 2886') {
-							SetNetoAutonomo(69678.65);
+							SetNetoAutonomo(82719.22);
 						} else {
-							SetNetoAutonomo(109155.21);
+							SetNetoAutonomo(129583.94);
 						}
 
 						break;
 					case 5:
 						if (datosCalculo.plan === 'PMI 2886') {
-							SetNetoAutonomo(81291.75);
+							SetNetoAutonomo(96505.75);
 						} else {
-							SetNetoAutonomo(127347.74);
+							SetNetoAutonomo(151181.26);
 						}
 
 						break;
 					case 6:
 						if (datosCalculo.plan === 'PMI 2886') {
-							SetNetoAutonomo(92904.87);
+							SetNetoAutonomo(110292.3);
 						} else {
-							SetNetoAutonomo(145540.28);
+							SetNetoAutonomo(172778.59);
 						}
 
 						break;
 					case 7:
 						if (datosCalculo.plan === 'PMI 2886') {
-							SetNetoAutonomo(104517.97);
+							SetNetoAutonomo(124078.83);
 						} else {
-							SetNetoAutonomo(163732.8);
+							SetNetoAutonomo(194375.9);
 						}
 
 						break;
 					case 8:
 						if (datosCalculo.plan === 'PMI 2886') {
-							SetNetoAutonomo(116131.08);
+							SetNetoAutonomo(137865.37);
 						} else {
-							SetNetoAutonomo(181925.35);
+							SetNetoAutonomo(215973.23);
 						}
 
 						break;
 					case 9:
 						if (datosCalculo.plan === 'PMI 2886') {
-							SetNetoAutonomo(127748.37);
+							SetNetoAutonomo(151656.87);
 						} else {
 							Swal.fire({
 								text: 'El valor del plan PMI 2886/2000 no esta definido para 9 personas.',
