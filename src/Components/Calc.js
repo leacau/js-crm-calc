@@ -665,7 +665,7 @@ export function Calc() {
 					className='md:text-1xl font-bold text-xl justify-center'
 					color='green'
 				>
-					Actualización 06-09-2023
+					Actualización valores Noviembre 2023
 				</Typography>
 			</div>
 		</div>
