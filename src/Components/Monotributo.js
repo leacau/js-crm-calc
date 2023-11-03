@@ -17,9 +17,9 @@ export function Monotributo() {
 					case 1:
 						if (datosCalculo.plan === 'PMI Monotributo Soltero') {
 							if (datosCalculo.ageT >= 27 && datosCalculo.ageT <= 30) {
-								SetNetoMonotributo(15800.5);
+								SetNetoMonotributo(17619.13);
 							} else if (datosCalculo.ageT <= 26) {
-								SetNetoMonotributo(14473.41);
+								SetNetoMonotributo(16139.3);
 							} else {
 								Swal.fire({
 									text: 'Si es mayor de 30 años, el plan seleccionado deber no puede ser soltero',
@@ -39,37 +39,37 @@ export function Monotributo() {
 									confirmButtonText: 'ok',
 								});
 							}
-							SetNetoMonotributo(24924.7);
+							SetNetoMonotributo(27793.53);
 						}
 
 						break;
 					case 2:
-						SetNetoMonotributo(49849.38);
+						SetNetoMonotributo(55587.04);
 
 						break;
 					case 3:
-						SetNetoMonotributo(62311.73);
+						SetNetoMonotributo(69483.81);
 
 						break;
 					case 4:
-						SetNetoMonotributo(74774.08);
+						SetNetoMonotributo(83380.57);
 
 						break;
 					case 5:
-						SetNetoMonotributo(87236.41);
+						SetNetoMonotributo(97277.32);
 
 						break;
 					case 6:
-						SetNetoMonotributo(99698.76);
+						SetNetoMonotributo(111174.09);
 						break;
 					case 7:
-						SetNetoMonotributo(112161.11);
+						SetNetoMonotributo(125070.85);
 						break;
 					case 8:
-						SetNetoMonotributo(124623.46);
+						SetNetoMonotributo(138967.62);
 						break;
 					case 9:
-						SetNetoMonotributo(137085.79);
+						SetNetoMonotributo(152864.36);
 
 						break;
 					default:
