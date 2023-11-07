@@ -14,32 +14,32 @@ export function Asalariado() {
 			const requeridosGrupo = [
 				{
 					Plan: 'PMI',
-					value: 54393.97,
+					value: 60654.72,
 				},
 				{
 					Plan: 'PMI2000',
-					value: 64597.77,
+					value: 72032.97,
 				},
 				{
 					Plan: 'PMI3000',
-					value: 79493.78,
+					value: 88643.51,
 				},
 			]; //Aportes requeridos para ingresos grupales
 			const requeridosIndividual = [
 				{
 					Plan: 'PMI',
-					value: 23570.48,
+					value: 26283.44,
 				},
 				{
 					Plan: 'PMI2000',
-					value: 35537.12,
+					value: 39627.44,
 				},
 				{
 					Plan: 'PMI3000',
-					value: 53668.72,
+					value: 59845.99,
 				},
 			]; //Aportes requeridos para ingresos individuales
-			const aporteMaximo = 23294.35; //Aporte personal de OS que representa el tope de descuento en el recibo de sueldo (776478.32*3)/100
+			const aporteMaximo = 28719.6; //Aporte personal de OS que representa el tope de descuento en el recibo de sueldo (776478.32*3)/100
 			if (sueldo >= aporteMaximo) {
 				Swal.fire({
 					text: 'El sueldo calculado es el máximo para el descuento de aportes de Obra Social. Consultá con administración.',
