@@ -223,6 +223,7 @@ export function Calc() {
 				netoMonotributo + extraMensual + fondoJubTit + fondoJubCony;
 			SetTotalNetoMonotributo(totalNeto);
 			SetFinalMonotributo(totalMonot);
+			alertA();
 		} else if (
 			datosCalculo.regimen === 'Autonomo' &&
 			datosCalculo.plan !== ''
@@ -669,8 +670,7 @@ export function Calc() {
 								{user.regimen === 'Monotributo' &&
 									`Final monotributo (con descuento de aporte): $ ${finalMonotributo.toFixed(
 										2
-									)}`alertA()}
-								
+									)}`}
 							</div>
 							<div>
 								{user.regimen === 'Autonomo' &&
