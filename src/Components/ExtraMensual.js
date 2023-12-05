@@ -6,18 +6,18 @@ import { useAuth } from '../Context/AuthContext';
 
 export function ExtraMensual() {
 	const [extraMensual, SetExtraMensual] = useState(0);
-	const servMutTit = 10747.2; //Valor del extra para titular
-	const servMutPart = 9012.2; //Valor del extra para participante
-	const servCesantia = 269; // valor de servicio de cesantía/junilación/fallecimiento
-	const sepelio = 280; //valor de servicio de sepelio, lo pagan desde los 10 años
+	const servMutTit = 11420.77; //Valor del extra para titular
+	const servMutPart = 9576.77; //Valor del extra para participante
+	const servCesantia = 286; // valor de servicio de cesantía/junilación/fallecimiento
+	const sepelio = 298; //valor de servicio de sepelio, lo pagan desde los 10 años
 	const { datosCalculo } = useAuth();
 
 	const ProtOdonto = () => {
 		if (datosCalculo.protOdonto === 'SI') {
 			if (parseInt(datosCalculo.quantity) === 1) {
-				return 1583;
+				return 1682;
 			} else if (parseInt(datosCalculo.quantity) > 1) {
-				const calculoProt = 996 * parseInt(datosCalculo.quantity);
+				const calculoProt = 1058 * parseInt(datosCalculo.quantity);
 				return calculoProt;
 			}
 		} else {

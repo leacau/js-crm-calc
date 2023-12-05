@@ -43,6 +43,7 @@ export function Calc() {
 	const [resultado, SetResultado] = useState(false);
 	const [finalAsalariado, SetFinalAsalariado] = useState(parseInt(0));
 	const [finalMonotributo, SetFinalMonotributo] = useState(0);
+	const [totalNetoMonotributo, SetTotalNetoMonotributo] = useState(0);
 	const [finalAutonomo, SetFinalAutonomo] = useState(0);
 	const [finalDifTope, SetFinalDifTope] = useState(0);
 	const [error, SetError] = useState('');
@@ -51,7 +52,7 @@ export function Calc() {
 	const { diferenciaTope } = Asalariado();
 	const { netoAutonomo } = Autonomo();
 	const { extraMensual } = ExtraMensual();
-	const { valorMonotributo, aporteMonotCony } = Monotributo();
+	const { valorMonotributo, aporteMonotCony, netoMonotributo } = Monotributo();
 
 	const reset = () => {
 		window.location.href = window.location.href;
@@ -218,6 +219,9 @@ export function Calc() {
 			let subTotalMonot = valorMonotributo;
 			let totalMonot =
 				subTotalMonot + extraMensual + fondoJubTit + fondoJubCony;
+			let totalNeto =
+				netoMonotributo + extraMensual + fondoJubTit + fondoJubCony;
+			SetTotalNetoMonotributo(totalNeto);
 			SetFinalMonotributo(totalMonot);
 		} else if (
 			datosCalculo.regimen === 'Autonomo' &&
@@ -323,6 +327,13 @@ export function Calc() {
 		} else {
 			SetResultado(true);
 		}
+	};
+	const alertA = () => {
+		Swal.fire({
+			text: 'Ahora se muestra el valor del monotributo sin el descuento. Gracias Leo Spreggero por la mejora!!!!',
+			icon: 'info',
+			confirmButtonText: 'ok',
+		});
 	};
 
 	return (
@@ -648,9 +659,18 @@ export function Calc() {
 								{user.regimen === 'Asalariado' &&
 									`Total Final: $ ${finalAsalariado}`}
 							</div>
-							<div>
+							<div style={{ color: 'red' }}>
 								{user.regimen === 'Monotributo' &&
-									`Final monotributo: $ ${finalMonotributo.toFixed(2)}`}
+									`Neto monotributo (sin descuento de aporte): $ ${totalNetoMonotributo.toFixed(
+										2
+									)}`}
+							</div>
+							<div style={{ color: 'green', fontWeight: 800 }}>
+								{user.regimen === 'Monotributo' &&
+									`Final monotributo (con descuento de aporte): $ ${finalMonotributo.toFixed(
+										2
+									)}`}
+									{alertA()}
 							</div>
 							<div>
 								{user.regimen === 'Autonomo' &&
@@ -665,7 +685,7 @@ export function Calc() {
 					className='md:text-1xl font-bold text-xl justify-center'
 					color='green'
 				>
-					Actualización valores Diciembre 2023 - Requeridos actualizados
+					Actualización valores Enero 2024 - Requeridos actualizados
 				</Typography>
 			</div>
 		</div>
