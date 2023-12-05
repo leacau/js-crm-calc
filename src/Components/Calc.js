@@ -223,7 +223,6 @@ export function Calc() {
 				netoMonotributo + extraMensual + fondoJubTit + fondoJubCony;
 			SetTotalNetoMonotributo(totalNeto);
 			SetFinalMonotributo(totalMonot);
-			alertA();
 		} else if (
 			datosCalculo.regimen === 'Autonomo' &&
 			datosCalculo.plan !== ''
@@ -327,6 +326,9 @@ export function Calc() {
 			});
 		} else {
 			SetResultado(true);
+			if (user.regimen === 'Monotributo') {
+				alertA();
+			}
 		}
 	};
 	const alertA = () => {
