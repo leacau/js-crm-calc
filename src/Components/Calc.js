@@ -669,7 +669,7 @@ export function Calc() {
 								{user.regimen === 'Monotributo' &&
 									`Final monotributo (con descuento de aporte): $ ${finalMonotributo.toFixed(
 										2
-									)}`{alertA()}}
+									)}`alertA()}
 								
 							</div>
 							<div>
