@@ -11,15 +11,24 @@ export function Monotributo() {
 	const [aporteMonotCony, SetAporteMonotCony] = useState(0);
 
 	useEffect(() => {
+		const netosMonotTodos = [
+			28959.98, 31615.35, 49872.05, 99744.06, 124680.08, 149616.1, 174552.09,
+			199488.12, 224424.14, 249360.16, 274296.15,
+		];
+		const aporteMonotCateg = [
+			5811.53, 6905.82, 8450.42, 9765.81, 10463.36, 12556.04, 15545.57,
+			17399.08, 19940.19,
+		];
+
 		if (datosCalculo.regimen === 'Monotributo') {
 			const calculoNetoMonotributo = () => {
 				switch (parseInt(datosCalculo.quantity)) {
 					case 1:
 						if (datosCalculo.plan === 'PMI Monotributo Soltero') {
 							if (datosCalculo.ageT >= 27 && datosCalculo.ageT <= 30) {
-								SetNetoMonotributo(18722.09);
+								SetNetoMonotributo(netosMonotTodos[1]);
 							} else if (datosCalculo.ageT <= 26) {
-								SetNetoMonotributo(17149.62);
+								SetNetoMonotributo(netosMonotTodos[0]);
 							} else {
 								Swal.fire({
 									text: 'Si es mayor de 30 años, el plan seleccionado no puede ser soltero',
@@ -39,37 +48,37 @@ export function Monotributo() {
 									confirmButtonText: 'ok',
 								});
 							}
-							SetNetoMonotributo(29533.41);
+							SetNetoMonotributo(netosMonotTodos[2]);
 						}
 
 						break;
 					case 2:
-						SetNetoMonotributo(59066.79);
+						SetNetoMonotributo(netosMonotTodos[3]);
 
 						break;
 					case 3:
-						SetNetoMonotributo(73833.49);
+						SetNetoMonotributo(netosMonotTodos[4]);
 
 						break;
 					case 4:
-						SetNetoMonotributo(88600.2);
+						SetNetoMonotributo(netosMonotTodos[5]);
 
 						break;
 					case 5:
-						SetNetoMonotributo(103366.88);
+						SetNetoMonotributo(netosMonotTodos[6]);
 
 						break;
 					case 6:
-						SetNetoMonotributo(118133.58);
+						SetNetoMonotributo(netosMonotTodos[7]);
 						break;
 					case 7:
-						SetNetoMonotributo(132900.29);
+						SetNetoMonotributo(netosMonotTodos[8]);
 						break;
 					case 8:
-						SetNetoMonotributo(147666.99);
+						SetNetoMonotributo(netosMonotTodos[9]);
 						break;
 					case 9:
-						SetNetoMonotributo(162433.67);
+						SetNetoMonotributo(netosMonotTodos[10]);
 
 						break;
 					default:
@@ -84,37 +93,37 @@ export function Monotributo() {
 
 			switch (datosCalculo.categoria) {
 				case 'A':
-					SetAporteMonotributo(2755.58);
+					SetAporteMonotributo(aporteMonotCateg[0]);
 					break;
 				case 'B':
-					SetAporteMonotributo(2755.58);
+					SetAporteMonotributo(aporteMonotCateg[0]);
 					break;
 				case 'C':
-					SetAporteMonotributo(2755.58);
+					SetAporteMonotributo(aporteMonotCateg[0]);
 					break;
 				case 'D':
-					SetAporteMonotributo(3274.43);
+					SetAporteMonotributo(aporteMonotCateg[1]);
 					break;
 				case 'E':
-					SetAporteMonotributo(4006.82);
+					SetAporteMonotributo(aporteMonotCateg[2]);
 					break;
 				case 'F':
-					SetAporteMonotributo(4630.52);
+					SetAporteMonotributo(aporteMonotCateg[3]);
 					break;
 				case 'G':
-					SetAporteMonotributo(4961.27);
+					SetAporteMonotributo(aporteMonotCateg[4]);
 					break;
 				case 'H':
-					SetAporteMonotributo(5953.52);
+					SetAporteMonotributo(aporteMonotCateg[5]);
 					break;
 				case 'I':
-					SetAporteMonotributo(7371.03);
+					SetAporteMonotributo(aporteMonotCateg[6]);
 					break;
 				case 'J':
-					SetAporteMonotributo(8249.88);
+					SetAporteMonotributo(aporteMonotCateg[7]);
 					break;
 				case 'K':
-					SetAporteMonotributo(9454.76);
+					SetAporteMonotributo(aporteMonotCateg[8]);
 					break;
 				case '':
 					break;
@@ -128,45 +137,52 @@ export function Monotributo() {
 				//Devuelve el aporte recibido por persona, de acuerdo a la categoria del monotributo
 			}
 			calculoNetoMonotributo();
-			const aporteRecibidoTotal = aporteMonotributo * datosCalculo.quantity;
-			const finalMonotrinuto = netoMonotributo - aporteRecibidoTotal;
-			SetValorMonotributo(finalMonotrinuto);
+			if (datosCalculo.regimenC === 'Monotributo') {
+				const aporteRecibidoTotal =
+					aporteMonotributo * (datosCalculo.quantity - 1) + aporteMonotCony;
+				const finalMonotrinuto = netoMonotributo - aporteRecibidoTotal;
+				SetValorMonotributo(finalMonotrinuto);
+			} else {
+				const aporteRecibidoTotal = aporteMonotributo * datosCalculo.quantity;
+				const finalMonotrinuto = netoMonotributo - aporteRecibidoTotal;
+				SetValorMonotributo(finalMonotrinuto);
+			}
 		}
 
 		if (datosCalculo.regimenC === 'Monotributo') {
 			switch (datosCalculo.categoriaC) {
 				case 'A':
-					SetAporteMonotCony(2755.58);
+					SetAporteMonotCony(aporteMonotCateg[0]);
 					break;
 				case 'B':
-					SetAporteMonotCony(2755.58);
+					SetAporteMonotCony(aporteMonotCateg[0]);
 					break;
 				case 'C':
-					SetAporteMonotCony(2755.58);
+					SetAporteMonotCony(aporteMonotCateg[0]);
 					break;
 				case 'D':
-					SetAporteMonotCony(3274.43);
+					SetAporteMonotCony(aporteMonotCateg[1]);
 					break;
 				case 'E':
-					SetAporteMonotCony(4006.82);
+					SetAporteMonotCony(aporteMonotCateg[2]);
 					break;
 				case 'F':
-					SetAporteMonotCony(4630.52);
+					SetAporteMonotCony(aporteMonotCateg[3]);
 					break;
 				case 'G':
-					SetAporteMonotCony(4961.27);
+					SetAporteMonotCony(aporteMonotCateg[4]);
 					break;
 				case 'H':
-					SetAporteMonotCony(5953.52);
+					SetAporteMonotCony(aporteMonotCateg[5]);
 					break;
 				case 'I':
-					SetAporteMonotCony(7371.03);
+					SetAporteMonotCony(aporteMonotCateg[6]);
 					break;
 				case 'J':
-					SetAporteMonotCony(8249.88);
+					SetAporteMonotCony(aporteMonotCateg[7]);
 					break;
 				case 'K':
-					SetAporteMonotCony(9454.76);
+					SetAporteMonotCony(aporteMonotCateg[8]);
 					break;
 				case '':
 					break;

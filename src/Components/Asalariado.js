@@ -14,29 +14,29 @@ export function Asalariado() {
 			const requeridosGrupo = [
 				{
 					Plan: 'PMI',
-					value: 64451.71,
+					value: 69607.85,
 				},
 				{
 					Plan: 'PMI2000',
-					value: 76542.23,
+					value: 82665.61,
 				},
 				{
 					Plan: 'PMI3000',
-					value: 94192.59,
+					value: 101782.0,
 				},
 			]; //Aportes requeridos para ingresos grupales
 			const requeridosIndividual = [
 				{
 					Plan: 'PMI',
-					value: 27928.78,
+					value: 30163.08,
 				},
 				{
 					Plan: 'PMI2000',
-					value: 42108.12,
+					value: 45476.77,
 				},
 				{
 					Plan: 'PMI3000',
-					value: 63592.35,
+					value: 68679.74,
 				},
 			]; //Aportes requeridos para ingresos individuales
 			const aporteMaximo = 28719.6; //Aporte personal de OS que representa el tope de descuento en el recibo de sueldo (776478.32*3)/100

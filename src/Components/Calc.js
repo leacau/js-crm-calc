@@ -306,6 +306,7 @@ export function Calc() {
 	};
 
 	const handleSubmit = (e) => {
+		console.log(datosCalculo.categoria, datosCalculo.categoriaC);
 		e.preventDefault();
 		if (user.ageT > 54 || user.ageC > 54) {
 			Swal.fire({
@@ -326,17 +327,7 @@ export function Calc() {
 			});
 		} else {
 			SetResultado(true);
-			if (user.regimen === 'Monotributo') {
-				alertA();
-			}
 		}
-	};
-	const alertA = () => {
-		Swal.fire({
-			text: 'Ahora se muestra el valor del monotributo sin el descuento. Gracias Leo Spreggero por la mejora!!!!',
-			icon: 'info',
-			confirmButtonText: 'ok',
-		});
 	};
 
 	return (
@@ -687,7 +678,7 @@ export function Calc() {
 					className='md:text-1xl font-bold text-xl justify-center'
 					color='green'
 				>
-					Actualización valores Enero 2024 - Requeridos actualizados
+					Actualización valores Febrero 2024 - Requeridos actualizados
 				</Typography>
 			</div>
 		</div>
