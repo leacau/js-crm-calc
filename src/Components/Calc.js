@@ -208,9 +208,13 @@ export function Calc() {
 		conyuge();
 		cantPersonas();
 
-		const difTopeFinal =
-			parseFloat(diferenciaTope) - parseFloat(aporteMonotCony);
-		SetFinalDifTope(parseFloat(difTopeFinal));
+		const difTopeFinal = parseFloat(diferenciaTope) - parseFloat(aporteMonotCony);
+		if(difTopeFinal>0){
+		SetFinalDifTope(parseFloat(difTopeFinal));	
+		}else{
+		SetFinalDifTope(0);
+		}
+		
 
 		const fondoJubTit = calculoFondoJub(datosCalculo.ageT, datosCalculo.sexT);
 		const fondoJubCony = calculoFondoJub(datosCalculo.ageC, datosCalculo.sexC);
