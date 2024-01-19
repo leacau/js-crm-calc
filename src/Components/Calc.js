@@ -242,7 +242,7 @@ export function Calc() {
 			(datosCalculo.salary !== undefined || datosCalculo.salary !== 0)
 		) {
 			const totalAsalariado =
-				parseFloat(difTopeFinal) +
+				parseFloat(finalDifTope) +
 				parseFloat(extraMensual) +
 				fondoJubTit +
 				fondoJubCony;
