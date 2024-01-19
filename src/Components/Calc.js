@@ -242,9 +242,8 @@ export function Calc() {
 			(datosCalculo.salary !== undefined || datosCalculo.salary !== 0)
 		) {
 			const totalAsalariado =
-				parseFloat(diferenciaTope) +
-				parseFloat(extraMensual) -
-				parseFloat(aporteMonotCony) +
+				parseFloat(difTopeFinal) +
+				parseFloat(extraMensual) +
 				fondoJubTit +
 				fondoJubCony;
 			SetFinalAsalariado(parseFloat(totalAsalariado));
@@ -682,7 +681,7 @@ export function Calc() {
 					className='md:text-1xl font-bold text-xl justify-center'
 					color='green'
 				>
-					Actualización valores Febrero 2024 - Requeridos actualizados
+					Actualización valores Febrero 2024 V2 - Requeridos actualizados
 				</Typography>
 			</div>
 		</div>
