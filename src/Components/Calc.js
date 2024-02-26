@@ -208,9 +208,13 @@ export function Calc() {
 		conyuge();
 		cantPersonas();
 
-		const difTopeFinal =
-			parseFloat(diferenciaTope) - parseFloat(aporteMonotCony);
-		SetFinalDifTope(parseFloat(difTopeFinal));
+		const difTopeFinal = parseFloat(diferenciaTope) - parseFloat(aporteMonotCony);
+		if(difTopeFinal>0){
+		SetFinalDifTope(parseFloat(difTopeFinal));	
+		}else{
+		SetFinalDifTope(0);
+		}
+		
 
 		const fondoJubTit = calculoFondoJub(datosCalculo.ageT, datosCalculo.sexT);
 		const fondoJubCony = calculoFondoJub(datosCalculo.ageC, datosCalculo.sexC);
@@ -238,9 +242,8 @@ export function Calc() {
 			(datosCalculo.salary !== undefined || datosCalculo.salary !== 0)
 		) {
 			const totalAsalariado =
-				parseFloat(diferenciaTope) +
-				parseFloat(extraMensual) -
-				parseFloat(aporteMonotCony) +
+				parseFloat(finalDifTope) +
+				parseFloat(extraMensual) +
 				fondoJubTit +
 				fondoJubCony;
 			SetFinalAsalariado(parseFloat(totalAsalariado));
@@ -688,7 +691,7 @@ export function Calc() {
 					className='md:text-1xl font-bold text-xl justify-center'
 					color='green'
 				>
-					Actualización valores Marzo 2024
+        Actualización valores Marzo 2024
 				</Typography>
 			</div>
 		</div>
