@@ -8,38 +8,40 @@ export function Asalariado() {
 	const { datosCalculo } = useAuth();
 	const [diferenciaTope, SetDiferenciaTope] = useState(0);
 	const [sueldoConyuge, SetSueldoConyuge] = useState(0);
+	const requeridos_ind = [34687.54, 52298.29, 78981.7];
+	const requeridos_grup = [80049.02, 95065.45, 116987.2];
 
 	useEffect(() => {
 		const calculoDiferenciaTope = (grupo, plan, sueldo, regimenC, aporteC) => {
 			const requeridosGrupo = [
 				{
 					Plan: 'PMI',
-					value: 69607.85,
+					value: requeridos_grup[0],
 				},
 				{
 					Plan: 'PMI2000',
-					value: 82665.61,
+					value: requeridos_grup[1],
 				},
 				{
 					Plan: 'PMI3000',
-					value: 101782.0,
+					value: requeridos_grup[2],
 				},
 			]; //Aportes requeridos para ingresos grupales
 			const requeridosIndividual = [
 				{
 					Plan: 'PMI',
-					value: 30163.08,
+					value: requeridos_ind[0],
 				},
 				{
 					Plan: 'PMI2000',
-					value: 45476.77,
+					value: requeridos_ind[1],
 				},
 				{
 					Plan: 'PMI3000',
-					value: 68679.74,
+					value: requeridos_ind[2],
 				},
 			]; //Aportes requeridos para ingresos individuales
-			const aporteMaximo = 28719.6; //Aporte personal de OS que representa el tope de descuento en el recibo de sueldo (776478.32*3)/100
+			const aporteMaximo = 34713.3; //Aporte personal de OS que representa el tope de descuento en el recibo de sueldo (776478.32*3)/100
 			if (sueldo >= aporteMaximo) {
 				Swal.fire({
 					text: 'El sueldo calculado es el máximo para el descuento de aportes de Obra Social. Consultá con administración.',

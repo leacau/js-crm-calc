@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
 	const [datosCalculo, SetDatosCalculo] = useState({
 		regimen: '',
 		plan: '',
-		family: 'NO',
+		family: '',
 		quantity: 1,
 		childrens: 0,
 	});
