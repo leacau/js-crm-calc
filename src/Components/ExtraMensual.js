@@ -26,7 +26,6 @@ export function ExtraMensual() {
 	};
 
 	const determinacionExtra = () => {
-		const descuento25 = datosCalculo.quantity * (15667.06 * 0.25);
 		const protesisOdonto = ProtOdonto();
 		const extraParticipantes =
 			servMutPart * (parseInt(datosCalculo.quantity) - 1);

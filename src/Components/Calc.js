@@ -370,96 +370,101 @@ export function Calc() {
 							<option value='Autonomo'>Autonomo</option>
 							<option value='Monotributo'>Monotributo</option>
 						</select>
-						<select
-							className='form-select appearance-none
-                        block
-                        w-full
-                        px-3
-                        py-1.5
-                        text-base
-                        font-normal
-                        text-gray-700
-                        bg-white bg-clip-padding bg-no-repeat
-                        border border-solid border-gray-300
-                        rounded
-                        transition
-                        ease-in-out
-                        m-0
-                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
-							aria-label='Default select example'
-							name='plan'
-							size='lg'
-							onChange={handleChange}
-						>
-							<option value=''>Selecciona el plan</option>
-							{user.regimen === 'Asalariado' && (
-								<option value='PMI'>PMI</option>
-							)}
-							{user.regimen === 'Asalariado' && (
-								<option value='PMI2000'>PMI 2000</option>
-							)}
-							{user.regimen === 'Asalariado' && (
-								<option value='PMI3000'>PMI 3000</option>
-							)}
-							{user.regimen === 'Autonomo' && (
-								<option value='PMI 2886 Soltero'>PMI 2886 Soltero</option>
-							)}
-							{user.regimen === 'Autonomo' && (
-								<option value='PMI 2886'>PMI 2886</option>
-							)}
-							{user.regimen === 'Autonomo' && (
-								<option value='PMI 2886/2000'>PMI 2886/2000</option>
-							)}
-							{user.regimen === 'Monotributo' && (
-								<option value='PMI Monotributo Soltero'>
-									PMI Monotributo Soltero
-								</option>
-							)}
-							{user.regimen === 'Monotributo' && (
-								<option value='PMI Monotributo'>PMI Monotributo</option>
-							)}
-						</select>
-						<select
-							className='form-select appearance-none
-                        block
-                        w-full
-                        px-3
-                        py-1.5
-                        text-base
-                        font-normal
-                        text-gray-700
-                        bg-white bg-clip-padding bg-no-repeat
-                        border border-solid border-gray-300
-                        rounded
-                        transition
-                        ease-in-out
-                        m-0
-                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
-							aria-label='Default select example'
-							name='family'
-							size='lg'
-							onChange={handleChange}
-						>
-							<option value=''>Selecciona ingreso</option>
-							<option value='NO'>Individual</option>
-							{user.plan !== 'PMI Monotributo Soltero' &&
-							user.plan !== 'PMI 2886 Soltero' ? (
-								<option value='SI'>Grupo Familiar</option>
-							) : (
-								''
-							)}
-						</select>
-						<div className='m-1'>
-							<div className='mb-2'>Datos del titular</div>
-							<Input
-								label='Edad del titular'
-								name='ageT'
-								size='lg'
-								defaultValue={''}
-								onChange={handleChange}
-							/>
+						{user.regimen !== '' && user.regimen !== undefined && (
 							<select
 								className='form-select appearance-none
+                        block
+                        w-full
+                        px-3
+                        py-1.5
+                        text-base
+                        font-normal
+                        text-gray-700
+                        bg-white bg-clip-padding bg-no-repeat
+                        border border-solid border-gray-300
+                        rounded
+                        transition
+                        ease-in-out
+                        m-0
+                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+								aria-label='Default select example'
+								name='plan'
+								size='lg'
+								onChange={handleChange}
+							>
+								<option value=''>Selecciona el plan</option>
+								{user.regimen === 'Asalariado' && (
+									<option value='PMI'>PMI</option>
+								)}
+								{user.regimen === 'Asalariado' && (
+									<option value='PMI2000'>PMI 2000</option>
+								)}
+								{user.regimen === 'Asalariado' && (
+									<option value='PMI3000'>PMI 3000</option>
+								)}
+								{user.regimen === 'Autonomo' && (
+									<option value='PMI 2886 Soltero'>PMI 2886 Soltero</option>
+								)}
+								{user.regimen === 'Autonomo' && (
+									<option value='PMI 2886'>PMI 2886</option>
+								)}
+								{user.regimen === 'Autonomo' && (
+									<option value='PMI 2886/2000'>PMI 2886/2000</option>
+								)}
+								{user.regimen === 'Monotributo' && (
+									<option value='PMI Monotributo Soltero'>
+										PMI Monotributo Soltero
+									</option>
+								)}
+								{user.regimen === 'Monotributo' && (
+									<option value='PMI Monotributo'>PMI Monotributo</option>
+								)}
+							</select>
+						)}
+						{user.plan !== '' && user.plan !== undefined && (
+							<select
+								className='form-select appearance-none
+                        block
+                        w-full
+                        px-3
+                        py-1.5
+                        text-base
+                        font-normal
+                        text-gray-700
+                        bg-white bg-clip-padding bg-no-repeat
+                        border border-solid border-gray-300
+                        rounded
+                        transition
+                        ease-in-out
+                        m-0
+                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+								aria-label='Default select example'
+								name='family'
+								size='lg'
+								onChange={handleChange}
+							>
+								<option value=''>Selecciona ingreso</option>
+								<option value='NO'>Individual</option>
+								{user.plan !== 'PMI Monotributo Soltero' &&
+								user.plan !== 'PMI 2886 Soltero' ? (
+									<option value='SI'>Grupo Familiar</option>
+								) : (
+									''
+								)}
+							</select>
+						)}
+						{user.family !== '' && user.family !== undefined && (
+							<div className='m-1'>
+								<div className='mb-2'>Datos del titular</div>
+								<Input
+									label='Edad del titular'
+									name='ageT'
+									size='lg'
+									defaultValue={''}
+									onChange={handleChange}
+								/>
+								<select
+									className='form-select appearance-none
 								mt-1
                         block
                         w-full
@@ -475,16 +480,17 @@ export function Calc() {
                         ease-in-out
                         m-0
                         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
-								label='Sexo de titular'
-								name='sexT'
-								size='lg'
-								onChange={handleChange}
-								defaultValue={''}
-							>
-								<option value='M'>M</option>
-								<option value='F'>F</option>
-							</select>
-						</div>
+									label='Sexo de titular'
+									name='sexT'
+									size='lg'
+									onChange={handleChange}
+									defaultValue={''}
+								>
+									<option value='M'>M</option>
+									<option value='F'>F</option>
+								</select>
+							</div>
+						)}
 						{input}
 						{inputConyuge}
 						{user.regimen === 'Asalariado' && (
@@ -587,9 +593,11 @@ export function Calc() {
 								<option value='K'>K</option>
 							</select>
 						)}
-						Prótesis odontológica
-						<select
-							className='form-select appearance-none
+						{user.plan !== undefined && user.plan !== '' && (
+							<div>
+								Prótesis odontológica
+								<select
+									className='form-select appearance-none
                         block
                         w-full
                         px-3
@@ -604,15 +612,17 @@ export function Calc() {
                         ease-in-out
                         m-0
                         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
-							label='Protesis Odontologica'
-							name='protOdonto'
-							size='lg'
-							onChange={handleChange}
-							defaultValue={''}
-						>
-							<option value='NO'>No</option>
-							<option value='SI'>Si</option>
-						</select>
+									label='Protesis Odontologica'
+									name='protOdonto'
+									size='lg'
+									onChange={handleChange}
+									defaultValue={''}
+								>
+									<option value='NO'>No</option>
+									<option value='SI'>Si</option>
+								</select>
+							</div>
+						)}
 					</CardBody>
 					<CardFooter className='pt-0'>
 						<Button
@@ -678,7 +688,7 @@ export function Calc() {
 					className='md:text-1xl font-bold text-xl justify-center'
 					color='green'
 				>
-					Actualización valores Febrero 2024 - Requeridos actualizados
+					Actualización valores Marzo 2024
 				</Typography>
 			</div>
 		</div>

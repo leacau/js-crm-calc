@@ -12,8 +12,8 @@ export function Monotributo() {
 
 	useEffect(() => {
 		const netosMonotTodos = [
-			28959.98, 31615.35, 49872.05, 99744.06, 124680.08, 149616.1, 174552.09,
-			199488.12, 224424.14, 249360.16, 274296.15,
+			33303.98, 36357.65, 57352.85, 114705.67, 143382.09, 172058.52, 200734.91,
+			229411.33, 258087.76, 286764.19, 315440.57,
 		];
 		const aporteMonotCateg = [
 			5811.53, 6905.82, 8450.42, 9765.81, 10463.36, 12556.04, 15545.57,
@@ -211,6 +211,7 @@ export function Monotributo() {
 		datosCalculo.ageC,
 		aporteMonotributo,
 		netoMonotributo,
+		aporteMonotCony,
 	]);
 
 	return { valorMonotributo, aporteMonotCony, netoMonotributo };
