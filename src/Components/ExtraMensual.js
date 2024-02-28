@@ -6,8 +6,8 @@ import { useAuth } from '../Context/AuthContext';
 
 export function ExtraMensual() {
 	const [extraMensual, SetExtraMensual] = useState(0);
-	const servMutTit = 19285.06; //Valor del extra para titular
-	const servMutPart = 16171.06; //Valor del extra para participante
+	const servMutTit = 21969.12; //Valor del extra para titular
+	const servMutPart = 18521.12; //Valor del extra para participante
 	const servCesantia = 483; // valor de servicio de cesantía/junilación/fallecimiento
 	const sepelio = 503; //valor de servicio de sepelio, lo pagan desde los 10 años
 	const { datosCalculo } = useAuth();
@@ -15,9 +15,9 @@ export function ExtraMensual() {
 	const ProtOdonto = () => {
 		if (datosCalculo.protOdonto === 'SI') {
 			if (parseInt(datosCalculo.quantity) === 1) {
-				return 2841;
+				return 3267;
 			} else if (parseInt(datosCalculo.quantity) > 1) {
-				const calculoProt = 1787 * parseInt(datosCalculo.quantity);
+				const calculoProt = 2055 * parseInt(datosCalculo.quantity);
 				return calculoProt;
 			}
 		} else {
