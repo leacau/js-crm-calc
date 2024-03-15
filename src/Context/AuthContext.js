@@ -32,9 +32,9 @@ export function AuthProvider({ children }) {
 	});
 
 	const calculoFondoJub = (edad, sexo) => {
-		const range1 = 2646;
-		const range2 = 5288;
-		const range3 = 7931;
+		const range1 = 3167;
+		const range2 = 6330;
+		const range3 = 9493;
 		if (sexo === 'M') {
 			if (edad >= 50 && edad <= 54) {
 				return parseInt(range1);
