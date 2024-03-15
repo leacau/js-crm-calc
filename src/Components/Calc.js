@@ -51,7 +51,7 @@ export function Calc() {
 	const { datosCalculo, setContacto, calculoFondoJub } = useAuth();
 	const { diferenciaTope } = Asalariado();
 	const { netoAutonomo } = Autonomo();
-	const { extraMensual } = ExtraMensual();
+	const { extraMensualGrupo } = ExtraMensual();
 	const { valorMonotributo, aporteMonotCony, netoMonotributo } = Monotributo();
 
 	const reset = () => {
@@ -116,6 +116,13 @@ export function Calc() {
 	};
 
 	useEffect(() => {
+		console.log(
+			'valorMonotributo:',
+			valorMonotributo,
+			'aporteMonotCony:',
+			aporteMonotCony,
+			netoMonotributo
+		);
 		const conyuge = () => {
 			if (user.conyuge === 'SI') {
 				SetInputConyuge(
@@ -222,9 +229,15 @@ export function Calc() {
 		if (datosCalculo.regimen === 'Monotributo') {
 			let subTotalMonot = valorMonotributo;
 			let totalMonot =
-				subTotalMonot + extraMensual + fondoJubTit + fondoJubCony;
+				subTotalMonot +
+				parseFloat(extraMensualGrupo) +
+				fondoJubTit +
+				fondoJubCony;
 			let totalNeto =
-				netoMonotributo + extraMensual + fondoJubTit + fondoJubCony;
+				netoMonotributo +
+				parseFloat(extraMensualGrupo) +
+				fondoJubTit +
+				fondoJubCony;
 			SetTotalNetoMonotributo(totalNeto);
 			SetFinalMonotributo(totalMonot);
 		} else if (
@@ -234,7 +247,10 @@ export function Calc() {
 			const subTotalAutonomo = netoAutonomo;
 
 			const totalAuto =
-				subTotalAutonomo + extraMensual + fondoJubTit + fondoJubCony;
+				subTotalAutonomo +
+				parseFloat(extraMensualGrupo) +
+				fondoJubTit +
+				fondoJubCony;
 
 			SetFinalAutonomo(totalAuto.toFixed(2));
 		} else if (
@@ -243,10 +259,10 @@ export function Calc() {
 		) {
 			const totalAsalariado =
 				parseFloat(finalDifTope) +
-				parseFloat(extraMensual) +
+				parseFloat(extraMensualGrupo) +
 				fondoJubTit +
 				fondoJubCony;
-			SetFinalAsalariado(parseFloat(totalAsalariado));
+			SetFinalAsalariado(parseFloat(totalAsalariado).toFixed(2));
 		}
 
 		if (user.ageT === '') {
@@ -296,7 +312,7 @@ export function Calc() {
 		user.conyuge,
 		user.protOdonto,
 		valorMonotributo,
-		extraMensual,
+		extraMensualGrupo,
 		netoAutonomo,
 		diferenciaTope,
 		finalDifTope,
@@ -309,7 +325,6 @@ export function Calc() {
 	};
 
 	const handleSubmit = (e) => {
-		console.log(datosCalculo.categoria, datosCalculo.categoriaC);
 		e.preventDefault();
 		if (user.ageT > 54 || user.ageC > 54) {
 			Swal.fire({
@@ -656,7 +671,7 @@ export function Calc() {
 						<>
 							<div>
 								{user.regimen === 'Asalariado' &&
-									`Extra mensual: $ ${extraMensual}`}
+									`Extra mensual: $ ${extraMensualGrupo}`}
 							</div>
 							<div>
 								{user.regimen === 'Asalariado' &&

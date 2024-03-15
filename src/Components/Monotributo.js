@@ -4,22 +4,15 @@ import Swal from 'sweetalert2';
 import { useAuth } from '../Context/AuthContext';
 
 export function Monotributo() {
-	const { datosCalculo, setContacto } = useAuth();
+	const { datosCalculo, setContacto, netosMonotTodos, aporteMonotCateg } =
+		useAuth();
 	const [netoMonotributo, SetNetoMonotributo] = useState();
 	const [aporteMonotributo, SetAporteMonotributo] = useState();
 	const [valorMonotributo, SetValorMonotributo] = useState();
 	const [aporteMonotCony, SetAporteMonotCony] = useState(0);
 
 	useEffect(() => {
-		const netosMonotTodos = [
-			39864.86, 43520.11, 68651.36, 137302.68, 171628.37, 205954.05, 240279.68,
-			274605.37, 308931.05, 343256.73, 377582.37,
-		];
-		const aporteMonotCateg = [
-			5811.53, 6905.82, 8450.42, 9765.81, 10463.36, 12556.04, 15545.57,
-			17399.08, 19940.19,
-		];
-
+		console.log(netosMonotTodos);
 		if (datosCalculo.regimen === 'Monotributo') {
 			const calculoNetoMonotributo = () => {
 				switch (parseInt(datosCalculo.quantity)) {
@@ -140,12 +133,16 @@ export function Monotributo() {
 			if (datosCalculo.regimenC === 'Monotributo') {
 				const aporteRecibidoTotal =
 					aporteMonotributo * (datosCalculo.quantity - 1) + aporteMonotCony;
-				const finalMonotrinuto = netoMonotributo - aporteRecibidoTotal;
+				const finalMonotrinuto =
+					parseFloat.netoMonotributo - aporteRecibidoTotal;
 				SetValorMonotributo(finalMonotrinuto);
+				console.log('1', finalMonotrinuto);
 			} else {
 				const aporteRecibidoTotal = aporteMonotributo * datosCalculo.quantity;
-				const finalMonotrinuto = netoMonotributo - aporteRecibidoTotal;
+				const finalMonotrinuto =
+					parseFloat(netoMonotributo) - aporteRecibidoTotal;
 				SetValorMonotributo(finalMonotrinuto);
+				console.log('2', netosMonotTodos, netosMonotTodos[0]);
 			}
 		}
 

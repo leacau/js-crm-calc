@@ -5,19 +5,20 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../Context/AuthContext';
 
 export function ExtraMensual() {
-	const [extraMensual, SetExtraMensual] = useState(0);
-	const servMutTit = 26296.49; //Valor del extra para titular
-	const servMutPart = 22169.49; //Valor del extra para participante
-	const servCesantia = 578; // valor de servicio de cesantía/junilación/fallecimiento
-	const sepelio = 602; //valor de servicio de sepelio, lo pagan desde los 10 años
+	const { sepelio, extraMensualTitGrup, servCesantia, protOdont } = useAuth();
+	const [extraMensualGrupo, SetExtraMensualGrupo] = useState(0);
+	const servMutTit = parseFloat(extraMensualTitGrup[0]); //Valor del extra para titular
+	const servMutPart = parseFloat(extraMensualTitGrup[1]); //Valor del extra para participante
+
 	const { datosCalculo } = useAuth();
 
 	const ProtOdonto = () => {
 		if (datosCalculo.protOdonto === 'SI') {
 			if (parseInt(datosCalculo.quantity) === 1) {
-				return 3910.69;
+				return parseFloat(protOdont[0]);
 			} else if (parseInt(datosCalculo.quantity) > 1) {
-				const calculoProt = 2460 * parseInt(datosCalculo.quantity);
+				const calculoProt =
+					parseFloat(protOdont[1]) * parseInt(datosCalculo.quantity);
 				return calculoProt;
 			}
 		} else {
@@ -46,9 +47,9 @@ export function ExtraMensual() {
 					datosCalculo.ageC !== ''
 				) {
 					const extraTotal = 0 + protesisOdonto;
-					SetExtraMensual(extraTotal);
+					SetExtraMensualGrupo(extraTotal);
 				} else {
-					SetExtraMensual(determinacionExtra());
+					SetExtraMensualGrupo(determinacionExtra());
 				}
 			} else if (
 				parseInt(datosCalculo.quantity) === 1 &&
@@ -56,19 +57,19 @@ export function ExtraMensual() {
 			) {
 				const extraTotal = 0 + protesisOdonto;
 
-				SetExtraMensual(extraTotal);
+				SetExtraMensualGrupo(extraTotal);
 			} else {
-				SetExtraMensual(determinacionExtra());
+				SetExtraMensualGrupo(determinacionExtra());
 			}
 		} else if (datosCalculo.regimen === 'Autonomo') {
 			if (datosCalculo.plan === 'PMI 2886 Soltero') {
 				const extraTotal = servMutTit - servCesantia + protesisOdonto;
-				SetExtraMensual(extraTotal);
+				SetExtraMensualGrupo(extraTotal);
 			} else {
-				SetExtraMensual(determinacionExtra());
+				SetExtraMensualGrupo(determinacionExtra());
 			}
 		} else {
-			SetExtraMensual(determinacionExtra());
+			SetExtraMensualGrupo(determinacionExtra());
 		}
 	};
 
@@ -76,13 +77,15 @@ export function ExtraMensual() {
 		ProtOdonto();
 		determinacionExtra();
 		calculoExtraMensual();
+		console.log(extraMensualGrupo);
 	}, [
 		datosCalculo,
 		datosCalculo.protOdonto,
 		datosCalculo.quantity,
 		datosCalculo.ageC,
 		datosCalculo.sexC,
+		datosCalculo.plan,
 	]);
 
-	return { extraMensual };
+	return { extraMensualGrupo };
 }

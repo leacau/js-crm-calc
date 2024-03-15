@@ -4,18 +4,10 @@ import Swal from 'sweetalert2';
 import { useAuth } from '../Context/AuthContext';
 
 export function Autonomo() {
-	const { datosCalculo } = useAuth();
+	const { datosCalculo, netos2886, neto2886_2000 } = useAuth();
 	const [netoAutonomo, SetNetoAutonomo] = useState();
 
 	useEffect(() => {
-		const netos2886 = [
-			44013.98, 48076.58, 375945.92, 151891.84, 189864.78, 227837.76, 265810.7,
-			303783.69, 341756.65, 379729.61, 417716.25,
-		];
-		const neto2886_2000 = [
-			118973.21, 237946.43, 297433.01, 356919.64, 416406.25, 475892.85,
-			535379.44, 594866.07,
-		];
 		if (datosCalculo.regimen === 'Autonomo' && datosCalculo.plan !== '') {
 			const calculoNetoAutonomo = () => {
 				switch (parseInt(datosCalculo.quantity)) {
