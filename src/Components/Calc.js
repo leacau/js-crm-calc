@@ -691,7 +691,7 @@ export function Calc() {
 					className='md:text-1xl font-bold text-xl justify-center'
 					color='green'
 				>
-					Actualización valores Abril 2024 - 15.03.2024
+					Actualización valores Abril 2024 - 15.03.2024 v1.1
 				</Typography>
 			</div>
 		</div>
